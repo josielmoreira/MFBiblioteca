@@ -7,8 +7,7 @@ INCLUDES    Usuario, Livro
 VARIABLES    reservado, emprestado
 INVARIANT    reservado : usuario <-> livro & 
              emprestado : usuario <-> livro 
-    
-    
+        
 INITIALISATION reservado := {} || 
     emprestado := {}
     
