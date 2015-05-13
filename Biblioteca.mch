@@ -46,10 +46,15 @@ OPERATIONS
         bb : ran(reservado) 
     THEN reservado := reservado - { uu|-> bb } ||
         emprestado := emprestado \/ { uu|-> bb }
-    END
+    END;
     
     
-    
+    devolucao(uu, bb) =
+    PRE uu : dom(emprestado) &
+        bb : ran(emprestado)
+    THEN emprestado := emprestado - { uu |-> bb }
+        END 
+        
     
     
 END
