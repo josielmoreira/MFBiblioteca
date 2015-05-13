@@ -15,7 +15,8 @@ INITIALISATION livro := {}
     END;
     
     removeLivro(bb) =
-    PRE bb : livro & bb : LIVRO
+    PRE bb : LIVRO &
+        bb : livro
     THEN livro := livro - { bb }
     END
     

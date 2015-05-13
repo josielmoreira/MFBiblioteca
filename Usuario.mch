@@ -16,7 +16,8 @@ OPERATIONS
     END;
     
      removeUsuario(uu) =
-    PRE uu : usuario
+    PRE uu : USUARIO &
+        uu : usuario
     THEN usuario := usuario - { uu }
         END
 END
