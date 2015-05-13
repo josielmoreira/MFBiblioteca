@@ -6,10 +6,12 @@ MACHINE     Biblioteca
 INCLUDES    Usuario, Livro
 VARIABLES    reservado, emprestado
 INVARIANT    reservado : usuario <-> livro & 
-             emprestado : usuario <-> livro 
+             emprestado : usuario <-> livro
+             
+             
       
 INITIALISATION reservado := {} || 
-    emprestado := {}
+    emprestado := {} 
     
 OPERATIONS
     
@@ -21,7 +23,7 @@ OPERATIONS
     
     
     cadastrarLivro ( bb ) =
-    PRE bb : LIVRO & bb /: livro
+    PRE bb : LIVRO & bb /: livro 
     THEN adicionaLivro(bb) 
     END;    
     
@@ -29,7 +31,7 @@ OPERATIONS
     PRE bb : LIVRO & bb : livro & 
         bb /: ran(reservado) & 
         bb /: ran(emprestado)
-    THEN removeLivro(bb)
+    THEN removeLivro(bb) 
     END; 
     
     
@@ -38,8 +40,11 @@ OPERATIONS
         bb : LIVRO &
         uu : usuario &
         bb : livro &
-        uu /: dom(reservado) &
-        bb /: ran(reservado) 
+        (uu : dom(reservado) or uu /: dom(reservado)) &
+        bb /: ran(reservado) &
+	    bb /: ran(emprestado) & 
+	    card(livro) > 1 & 
+	    card(reservado) < 4
     THEN reservado := reservado \/ {uu |-> bb}
     END;
     
@@ -59,7 +64,9 @@ OPERATIONS
             uu : dom(reservado) & 
             bb : ran(reservado) 
         THEN reservado := reservado - { uu|-> bb } ||
-            emprestado := emprestado \/ { uu|-> bb }
+            emprestado := emprestado \/ { uu|-> bb } ||  
+            removerDoEstoque(bb)
+            
         END;
         
         
@@ -70,8 +77,4 @@ OPERATIONS
             bb : ran(emprestado)
         THEN emprestado := emprestado - { uu |-> bb }
         END 
-        
-
-    
-    
 END

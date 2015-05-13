@@ -4,21 +4,29 @@
 */
 MACHINE Livro
 INCLUDES LivroC
-VARIABLES livro
-INVARIANT livro <: LIVRO
-INITIALISATION livro := {}
+VARIABLES livro,estoque
+INVARIANT livro <: LIVRO &
+    estoque : NAT & estoque = card(livro)
+INITIALISATION livro := {} || estoque := 0
     OPERATIONS
     
     adicionaLivro(bb) =
     PRE bb : LIVRO & bb /: livro 
-    THEN livro := livro \/ { bb }
+    THEN livro := livro \/ { bb } || estoque := estoque + 1
     END;
     
     removeLivro(bb) =
     PRE bb : LIVRO &
         bb : livro
-    THEN livro := livro - { bb }
-    END
+    THEN livro := livro - { bb } || estoque := estoque - 1
+    END;
+
+    removerDoEstoque(bb) =
+    PRE bb : LIVRO &
+        bb : livro
+    THEN estoque := estoque - 1
+        END
+
     
      
     
