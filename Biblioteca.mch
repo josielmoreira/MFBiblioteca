@@ -3,39 +3,36 @@
  * Creation date: 11/05/2015
  */
 MACHINE     Biblioteca
-INCLUDES    Usuario,Livro
-  
-VARIABLES    usuario, livros, reservado, emprestado
-INVARIANT    usuario <: USUARIO &
-             livros <: LIVRO &
-             reservado : usuario >+> livros & 
-             emprestado : usuario >+> livros
+INCLUDES    Usuario
+EXTENDS     Livro
+VARIABLES    reservado, emprestado
+INVARIANT    reservado : usuario <-> livro & 
+             emprestado : usuario <-> livro 
+
              
-INITIALISATION usuario := {} || 
-               livros := {} || 
-               reservado := {} || 
+INITIALISATION reservado := {} || 
                emprestado := {}
     
 OPERATIONS
 
-cadastrarLivro ( bb ) =
-    PRE bb : LIVRO & bb /: livros
-    THEN livros := livros \/ { bb }
+
+cadastrarUsuario ( uu ) =
+    PRE uu : USUARIO & uu /: usuario
+    THEN adicionaUsuario(uu) 
     END;
     
 reservarLivro ( uu, bb ) = 
     PRE uu : usuario &
-        bb : livros & 
-        bb : LIVRO & 
-        card(livros) > 1
-    THEN livros := livros - { bb } ||
-        reservado := reservado \/ {uu |-> bb}
+        bb : livro &
+        uu /: dom(reservado) &
+        bb /: ran(reservado) 
+    THEN reservado := reservado \/ {uu |-> bb}
          
           
     END;
 realizarEmprestimo( uu, bb ) =
     PRE uu : dom(reservado) & 
-        bb : ran(reservado)
+        bb : ran(reservado) 
     THEN reservado := reservado - { uu|-> bb } ||
         emprestado := emprestado \/ { uu|-> bb }
     END

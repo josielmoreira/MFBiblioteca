@@ -19,4 +19,6 @@ INITIALISATION livro := {}
     THEN livro := livro - { bb }
     END
     
+     
+    
 END
