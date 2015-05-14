@@ -6,7 +6,8 @@ MACHINE     Biblioteca
 INCLUDES    Usuario, Livro
 VARIABLES    reservado, emprestado
 INVARIANT    reservado : usuario <-> livro & 
-    emprestado : usuario <-> livro 
+            emprestado : usuario <-> livro 
+            
     
     
 INITIALISATION reservado := {} || 
@@ -39,7 +40,7 @@ OPERATIONS
         bb : LIVRO &
         uu : usuario &
         bb : livro &
-        uu /: dom(reservado) &
+        (uu /: dom(reservado) or uu : dom(reservado)) &
         bb /: ran(reservado) 
     THEN reservado := reservado \/ {uu |-> bb}
     END;
