@@ -24,10 +24,14 @@ INITIALISATION livro := {} || biblioteca := {} || quantidade := {}
      
    
     
-    removeLivro(bb) =
-    PRE bb : LIVRO &
-        bb : livro
-    THEN livro := livro - { bb }
+    removeLivro(bb,nn) =
+    PRE bb : LIVRO & 
+         bb : livro &
+         nn : NAT1 &
+         nn : quantidade &
+         bb : dom(biblioteca) & nn : ran(biblioteca)
+    THEN  quantidade := quantidade \/ {nn -1}
+	 
     END
     
      
