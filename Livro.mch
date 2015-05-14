@@ -5,24 +5,23 @@
 MACHINE Livro
 INCLUDES LivroC
 VARIABLES livro, quantidade, biblioteca
-INVARIANT livro <: LIVRO & quantidade <: 1..10 & card(quantidade) < 11 &  biblioteca : livro <-> quantidade 
-INITIALISATION livro := {} || quantidade := {} || biblioteca := {}
+INVARIANT   quantidade <: NAT & livro <: LIVRO  &  biblioteca : livro +-> quantidade
+INITIALISATION livro := {} || biblioteca := {} || quantidade := {}
     OPERATIONS
  
     
-    adicionarExemplar(nn) =
-    PRE nn : 1..10  
-    THEN quantidade := quantidade \/ {nn}
-        END;
     
-    
-    adicionaLivro(bb,nn) =
-    PRE bb : LIVRO & bb /: livro &
-        nn : quantidade &
-        bb /: dom(biblioteca)
-    
-    THEN biblioteca := biblioteca \/ { bb |-> nn }
-    END;
+     
+     adicionarLivro(bb,nn) =
+     PRE bb : LIVRO &
+         bb /: livro &
+         nn : NAT &
+         nn /: quantidade &
+         bb /: dom(biblioteca)
+     THEN livro := livro \/ {bb} || quantidade := quantidade \/ {nn} ||  biblioteca(bb) := nn
+         END;
+     
+   
     
     removeLivro(bb) =
     PRE bb : LIVRO &
