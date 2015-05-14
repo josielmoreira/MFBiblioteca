@@ -6,7 +6,7 @@ MACHINE     Biblioteca
 INCLUDES    Usuario, Livro
 VARIABLES    reservado, emprestado
 INVARIANT    reservado : usuario <-> livro & 
-            emprestado : usuario <-> livro 
+             emprestado : usuario <-> livro 
             
     
     
@@ -22,9 +22,14 @@ OPERATIONS
     END;
     
     
-    cadastrarLivro ( bb ) =
-    PRE bb : LIVRO & bb /: livro
-    THEN adicionaLivro(bb) 
+    cadastrarLivro ( bb,nn ) =
+    PRE bb : LIVRO & 
+        bb /: livro & 
+        nn : QUANTIDADE & 
+        nn /: quantidade &
+        bb /: dom(biblioteca) &
+        nn /: ran(biblioteca)
+    THEN adicionaLivro(bb,nn) 
     END;    
     
     removerLivro ( bb ) =

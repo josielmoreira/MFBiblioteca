@@ -3,7 +3,7 @@
 * Creation date: 12/05/15
 */
 MACHINE LivroC
-SETS LIVRO;QUANTIDADE
+SETS LIVRO
     
     
 END
