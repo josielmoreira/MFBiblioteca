@@ -10,9 +10,17 @@ INITIALISATION livro := {} || quantidade := {} || biblioteca := {}
     OPERATIONS
  
     
+    adicionarExemplar(nn) =
+    PRE nn : 1..10  
+    THEN quantidade := quantidade \/ {nn}
+        END;
+    
+    
     adicionaLivro(bb,nn) =
     PRE bb : LIVRO & bb /: livro &
-        nn : 1..10 & nn /: quantidade
+        nn : quantidade &
+        bb /: dom(biblioteca)
+    
     THEN biblioteca := biblioteca \/ { bb |-> nn }
     END;
     
