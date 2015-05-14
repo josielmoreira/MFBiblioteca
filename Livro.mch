@@ -5,7 +5,7 @@
 MACHINE Livro
 INCLUDES LivroC
 VARIABLES livro, quantidade, biblioteca
-INVARIANT   quantidade <: NAT & livro <: LIVRO  &  biblioteca : livro +-> quantidade
+INVARIANT   quantidade <: NAT1 & livro <: LIVRO  &  biblioteca : livro --> quantidade
 INITIALISATION livro := {} || biblioteca := {} || quantidade := {}
     OPERATIONS
  
@@ -15,9 +15,10 @@ INITIALISATION livro := {} || biblioteca := {} || quantidade := {}
      adicionarLivro(bb,nn) =
      PRE bb : LIVRO &
          bb /: livro &
-         nn : NAT &
-         nn /: quantidade &
+         nn : NAT1 &
+         (nn /: quantidade or nn : quantidade) &
          bb /: dom(biblioteca)
+
      THEN livro := livro \/ {bb} || quantidade := quantidade \/ {nn} ||  biblioteca(bb) := nn
          END;
      

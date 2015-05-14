@@ -25,11 +25,10 @@ OPERATIONS
     cadastrarLivro ( bb,nn ) =
     PRE bb : LIVRO & 
         bb /: livro & 
-        nn : QUANTIDADE & 
-        nn /: quantidade &
+        (nn : quantidade or nn /: quantidade) &
         bb /: dom(biblioteca) &
         nn /: ran(biblioteca)
-    THEN adicionaLivro(bb,nn) 
+    THEN adicionarLivro(bb,nn) 
     END;    
     
     removerLivro ( bb ) =
