@@ -5,13 +5,13 @@
 MACHINE     Biblioteca
 INCLUDES    Usuario, Livro
 VARIABLES    reservado, emprestado
-INVARIANT    reservado : usuario <-> livro & 
-             emprestado : usuario <-> livro 
+INVARIANT    reservado : usuario <-> biblioteca & 
+             emprestado : usuario <-> biblioteca
             
     
     
 INITIALISATION reservado := {} || 
-    emprestado := {}
+                emprestado := {}
     
 OPERATIONS
     
@@ -22,46 +22,28 @@ OPERATIONS
     END;
     
     
-    cadastrarLivro ( bb,nn ) =
-    PRE bb : LIVRO & 
-        bb /: livro & 
-        (nn : quantidade or nn /: quantidade) &
-        bb /: dom(biblioteca) &
-        nn /: ran(biblioteca)
+    cadastrarLivro (bb,nn) =
+    PRE bb : LIVRO &
+         bb /: livro &
+         nn : NAT1 &
+         (nn /: quantidade or nn : quantidade) &
+         bb /: dom(biblioteca)
     THEN adicionarLivro(bb,nn) 
-    END;    
-    
-    removerLivro ( bb ) =
-    PRE bb : LIVRO & bb : livro & 
-        bb /: ran(reservado) & 
-        bb /: ran(emprestado)
-    THEN removeLivro(bb)
-    END; 
+    END;     
     
     
-    reservarLivro ( uu, bb ) = 
+    reservarLivro ( uu, bb,nn) = 
     PRE uu : USUARIO &
         bb : LIVRO &
         uu : usuario &
         bb : livro &
-        (uu /: dom(reservado) or uu : dom(reservado)) &
-        bb /: ran(reservado) 
-    THEN reservado := reservado \/ {uu |-> bb}
+        nn : NAT1 & nn : quantidade &
+        (uu /: dom(reservado) or uu : dom(reservado))
+    THEN reservado := reservado \/ {uu |-> (bb, nn)}
     END;
-    
-    cancelarReserva(uu, bb) = 
-    PRE uu : USUARIO &
-        uu : usuario &
-        bb : LIVRO &
-        bb : livro &
-        bb : ran(reservado) &
-        bb /: ran(emprestado)
-        THEN reservado := reservado - {uu |-> bb}
-        END; 
         
         realizarEmprestimo( uu, bb ) =
         PRE uu : USUARIO &
-            bb : LIVRO &
             uu : dom(reservado) & 
             bb : ran(reservado) 
         THEN reservado := reservado - { uu|-> bb } ||
@@ -71,7 +53,6 @@ OPERATIONS
         
         devolucao(uu, bb) =
         PRE uu : USUARIO &
-            bb : LIVRO &
             uu : dom(emprestado) &
             bb : ran(emprestado)
         THEN emprestado := emprestado - { uu |-> bb }
