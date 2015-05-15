@@ -4,14 +4,16 @@
 */
 MACHINE     Biblioteca
 INCLUDES    Usuario, Livro
-VARIABLES    reservado, emprestado
+VARIABLES    reservado, emprestado, emprestar
 INVARIANT    reservado : usuario <-> biblioteca & 
-             emprestado : usuario <-> biblioteca
+             emprestado : usuario <-> biblioteca &
+             emprestar <: biblioteca
             
     
     
 INITIALISATION reservado := {} || 
-                emprestado := {}
+                emprestado := {} ||
+                emprestar := {}
     
 OPERATIONS
     
@@ -39,16 +41,20 @@ OPERATIONS
         bb : livro &
         nn : NAT1 & nn : quantidade &
         (uu /: dom(reservado) or uu : dom(reservado)) &
-        bb : dom(biblioteca)
+        bb /: dom(emprestar)
     THEN reservado := reservado \/ {uu |-> (bb, nn)}
     END;
         
-        realizarEmprestimo( uu, bb ) =
-        PRE uu : USUARIO &
-            uu : dom(reservado) & 
-            bb : ran(reservado) 
-        THEN reservado := reservado - { uu|-> bb } ||
-            emprestado := emprestado \/ { uu|-> bb }
+        realizarEmprestimo( uu, bb , nn) =
+        PRE  uu : USUARIO &
+        bb : LIVRO &
+        uu : usuario &
+        bb : livro &
+        nn : NAT1 & nn : quantidade &
+        (uu /: dom(reservado) or uu : dom(reservado)) &
+        bb /: dom(emprestar)
+        THEN reservado := reservado - { uu|-> (bb,nn) } ||
+            emprestado := emprestado \/ { uu|-> (bb,nn) }
         END;
         
         

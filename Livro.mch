@@ -16,10 +16,10 @@ INITIALISATION livro := {} || biblioteca := {} || quantidade := {}
      PRE bb : LIVRO &
          bb /: livro &
          nn : NAT1 &
-         (nn /: quantidade or nn : quantidade) &
+         (nn /: ran(biblioteca)or nn : ran(biblioteca)) &
          bb /: dom(biblioteca)
 
-     THEN livro := livro \/ {bb} || quantidade := quantidade \/ {nn} ||  biblioteca(bb) := nn
+     THEN livro := livro \/ {bb} || quantidade := quantidade \/ {nn} ||  biblioteca := biblioteca \/ {bb |-> nn}
          END;
      
    
