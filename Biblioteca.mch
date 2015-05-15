@@ -38,7 +38,8 @@ OPERATIONS
         uu : usuario &
         bb : livro &
         nn : NAT1 & nn : quantidade &
-        (uu /: dom(reservado) or uu : dom(reservado))
+        (uu /: dom(reservado) or uu : dom(reservado)) &
+        bb : dom(biblioteca)
     THEN reservado := reservado \/ {uu |-> (bb, nn)}
     END;
         
