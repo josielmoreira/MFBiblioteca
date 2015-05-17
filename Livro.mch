@@ -25,6 +25,20 @@ OPERATIONS
         (bb : dom(quantidadeExemplar))
     THEN  quantidadeExemplar := {bb} <<| quantidadeExemplar ||
         livro := livro - { bb }
-
-    END
+    END;
+    
+    removeExemplar(bb,nn) =
+    PRE bb : livro & 
+        nn : ran(quantidadeExemplar)
+    THEN 
+quantidadeExemplar :=  quantidadeExemplar <+ {bb |-> nn-1}
+        END;
+        
+        acrescentaExemplar(bb,nn) =
+    PRE bb : livro & 
+        nn : ran(quantidadeExemplar)
+    THEN 
+quantidadeExemplar :=  quantidadeExemplar <+ {bb |-> nn + 1}
+        END
+    
 END

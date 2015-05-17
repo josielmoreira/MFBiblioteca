@@ -4,23 +4,21 @@
 */
 MACHINE     Biblioteca
 INCLUDES    Usuario, Livro
-VARIABLES    reservado, emprestado, emprestar
-INVARIANT    reservado : usuario <-> biblioteca & 
-             emprestado : usuario <-> biblioteca &
-             emprestar <: biblioteca
+VARIABLES   reservado, emprestado
+INVARIANT   reservado : usuario <-> livro & 
+            emprestado : usuario <-> livro 
             
     
     
 INITIALISATION reservado := {} || 
-                emprestado := {} ||
-                emprestar := {}
+                emprestado := {}
     
 OPERATIONS
     
     
     cadastrarUsuario ( uu ) =
     PRE uu : USUARIO & uu /: usuario
-    THEN adicionaUsuario(uu) 
+    THEN adicionaUsuario(uu)
     END;
     
     
@@ -28,8 +26,8 @@ OPERATIONS
     PRE bb : LIVRO &
          bb /: livro &
          nn : NAT1 &
-         (nn /: quantidade or nn : quantidade) &
-         bb /: dom(biblioteca)
+         nn /: ran(quantidadeExemplar) &
+         bb /: dom(quantidadeExemplar)
     THEN adicionarLivro(bb,nn) 
     END;     
     
@@ -39,30 +37,52 @@ OPERATIONS
         bb : LIVRO &
         uu : usuario &
         bb : livro &
-        nn : NAT1 & nn : quantidade &
+        nn : NAT1 & 
+        nn : ran(quantidadeExemplar) &
         (uu /: dom(reservado) or uu : dom(reservado)) &
-        bb /: dom(emprestar)
-    THEN reservado := reservado \/ {uu |-> (bb, nn)}
+        bb : dom(quantidadeExemplar) &
+        bb /: ran(reservado)
+    THEN reservado := reservado \/ {uu |-> (bb)} ||
+        removeExemplar(bb,nn)
     END;
         
-        realizarEmprestimo( uu, bb , nn) =
+    cancelarReservar ( uu, bb,nn) = 
+    PRE uu : USUARIO &
+        bb : LIVRO &
+        uu : usuario &
+        bb : livro &
+        nn : NAT1 & 
+        nn : ran(quantidadeExemplar) &
+        uu : dom(reservado) &
+        bb : ran(reservado)
+    THEN reservado := reservado - {uu |-> (bb)} ||
+        acrescentaExemplar(bb,nn)
+    END;
+        
+        
+        realizarEmprestimo( uu, bb) =
         PRE  uu : USUARIO &
         bb : LIVRO &
         uu : usuario &
         bb : livro &
-        nn : NAT1 & nn : quantidade &
-        (uu /: dom(reservado) or uu : dom(reservado)) &
-        bb /: dom(emprestar)
-        THEN reservado := reservado - { uu|-> (bb,nn) } ||
-            emprestado := emprestado \/ { uu|-> (bb,nn) }
+        uu : dom(reservado) & bb : ran(reservado)
+    THEN reservado := reservado - { uu|-> (bb)} ||
+            emprestado := emprestado \/ { uu|-> (bb)}
         END;
         
         
-        devolucao(uu, bb) =
+        devolucao(uu, bb, nn) =
         PRE uu : USUARIO &
-            uu : dom(emprestado) &
-            bb : ran(emprestado)
-        THEN emprestado := emprestado - { uu |-> bb }
+        bb : LIVRO &
+        uu : usuario &
+        bb : livro &
+        nn : NAT1 & 
+        nn : ran(quantidadeExemplar) &
+        bb /: ran(reservado) &
+        uu /: dom(reservado) &
+        bb : ran(emprestado) & uu : dom(emprestado)
+        THEN emprestado := emprestado - { uu |-> bb } ||
+            acrescentaExemplar(bb,nn)
         END 
         
         
