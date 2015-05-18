@@ -4,7 +4,7 @@
 */
 MACHINE Usuario
     
-INCLUDES UsuarioC
+EXTENDS UsuarioC
 VARIABLES usuario
 INVARIANT usuario <: USUARIO
 INITIALISATION usuario := {}
