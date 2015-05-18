@@ -27,20 +27,25 @@ removeLivro(bb) =
         livro := livro - { bb }
     END;
     
-removeExemplar(bb,nn) =
-    PRE bb : LIVRO &
+
+    removeExemplar(bb,nn) =
+    PRE bb : LIVRO & 
         bb : livro & 
         nn : NAT1 &
         nn : ran(quantidadeExemplar)
     THEN quantidadeExemplar :=  quantidadeExemplar <+ {bb |-> nn - 1}
     END;
         
-acrescentaExemplar(bb,nn) =
-    PRE bb : LIVRO &
+
+        acrescentaExemplar(bb,nn) =
+    PRE bb : LIVRO & 
         bb : livro & 
-        nn : ran(quantidadeExemplar) & 
-        nn + 1 < MAXINT
-    THEN quantidadeExemplar :=  quantidadeExemplar <+ {bb |-> nn + 1}
-    END
+        nn : NAT1 &
+        nn + 1 < MAXINT &
+        nn : ran(quantidadeExemplar)
+    THEN 
+quantidadeExemplar :=  quantidadeExemplar <+ {bb |-> nn + 1}
+        END
+
     
 END

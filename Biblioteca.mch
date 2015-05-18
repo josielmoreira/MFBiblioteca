@@ -26,16 +26,18 @@ cadastrarLivro (bb,nn) =
     THEN adicionarLivro(bb,nn) 
     END;     
     
-reservarLivro ( uu, bb) = 
+reservarLivro ( uu, bb ) = 
     PRE uu : USUARIO &
         bb : LIVRO &
         uu : usuario &
-        bb : livro &
-        (uu /: dom(reservado) or uu : dom(reservado)) &
-        bb : dom(quantidadeExemplar) &
-        (bb /: ran(reservado) or bb : ran(reservado))
-    THEN reservado := reservado \/ {uu |-> (bb)}
-
+        bb : livro 
+    THEN 
+        ANY nn
+            WHERE nn : NAT & nn : quantidadeExemplar[{bb}]
+            THEN reservado := reservado \/ {uu |-> bb} ||
+                removeExemplar(bb,nn)
+                
+            END
     END;
         
         
@@ -49,18 +51,15 @@ realizarEmprestimo( uu, bb) =
             emprestado := emprestado \/ { uu|-> (bb)}
     END;
         
-devolucao(uu, bb, nn) =
+devolucao(uu, bb) =
         PRE uu : USUARIO &
         bb : LIVRO &
         uu : usuario &
         bb : livro &
-        nn : NAT1 & 
-        nn : ran(quantidadeExemplar) &
         bb /: ran(reservado) &
         uu /: dom(reservado) &
         bb : ran(emprestado) & uu : dom(emprestado)
-        THEN emprestado := emprestado - { uu |-> bb } ||
-            acrescentaExemplar(bb,nn)
+        THEN emprestado := emprestado - { uu |-> bb }
         END 
         
 END
