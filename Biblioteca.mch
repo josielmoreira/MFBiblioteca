@@ -26,22 +26,21 @@ OPERATIONS
     PRE bb : LIVRO &
          bb /: livro &
          nn : NAT1 &
-         nn /: ran(quantidadeExemplar) &
          bb /: dom(quantidadeExemplar)
     THEN adicionarLivro(bb,nn) 
     END;     
     
     
-    reservarLivro ( uu, bb,nn) = 
+    reservarLivro ( uu, bb) = 
     PRE uu : USUARIO &
         bb : LIVRO &
         uu : usuario &
         bb : livro &
-        nn : NAT1 & 
+        nn : NAT1 &
         nn : ran(quantidadeExemplar) &
         (uu /: dom(reservado) or uu : dom(reservado)) &
         bb : dom(quantidadeExemplar) &
-        bb /: ran(reservado)
+        (bb : ran(reservado) or bb /: ran(reservado))
     THEN reservado := reservado \/ {uu |-> (bb)} ||
         removeExemplar(bb,nn)
     END;
@@ -51,7 +50,7 @@ OPERATIONS
         bb : LIVRO &
         uu : usuario &
         bb : livro &
-        nn : NAT1 & 
+        nn : NAT1 & nn + 1 < MAXINT &
         nn : ran(quantidadeExemplar) &
         uu : dom(reservado) &
         bb : ran(reservado)
