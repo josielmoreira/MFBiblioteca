@@ -30,7 +30,8 @@ reservarLivro ( uu, bb ) =
     PRE uu : USUARIO &
         bb : LIVRO &
         uu : usuario &
-        bb : livro 
+        bb : livro &
+	    (bb : ran(reservado) or bb /: ran(reservado))
     THEN 
         ANY nn
             WHERE nn : NAT & nn : quantidadeExemplar[{bb}]
@@ -39,27 +40,43 @@ reservarLivro ( uu, bb ) =
                 
             END
     END;
-        
+      
+cancelarReservar( uu, bb ) = 
+    PRE uu : USUARIO &
+        bb : LIVRO &
+        uu : usuario &
+        bb : livro &
+        bb : ran(reservado)
+    THEN 
+        ANY nn
+            WHERE nn : NAT & nn : quantidadeExemplar[{bb}]
+            THEN reservado := reservado - {uu |-> bb} ||
+                acrescentaExemplar(bb,nn) 
+            END
+    END;
         
 realizarEmprestimo( uu, bb) =
         PRE  uu : USUARIO &
         bb : LIVRO &
         uu : usuario &
         bb : livro &
-        uu : dom(reservado) & bb : ran(reservado)
+        uu : dom(reservado) & bb : ran(reservado) &
+        (bb : ran(emprestado) or bb /: ran(emprestado))
     THEN reservado := reservado - { uu|-> (bb)} ||
             emprestado := emprestado \/ { uu|-> (bb)}
     END;
         
-devolucao(uu, bb) =
-        PRE uu : USUARIO &
+devolucao( uu, bb ) = 
+    PRE uu : USUARIO &
         bb : LIVRO &
         uu : usuario &
         bb : livro &
-        bb /: ran(reservado) &
-        uu /: dom(reservado) &
-        bb : ran(emprestado) & uu : dom(emprestado)
-        THEN emprestado := emprestado - { uu |-> bb }
-        END 
-        
+        bb : ran(emprestado)
+    THEN 
+        ANY nn
+            WHERE nn : NAT & nn : quantidadeExemplar[{bb}]
+            THEN emprestado := emprestado - {uu |-> bb} ||
+                acrescentaExemplar(bb,nn) 
+            END
+    END
 END
