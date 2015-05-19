@@ -21,7 +21,7 @@ cadastrarUsuario ( uu ) =
 cadastrarLivro (bb,nn) =
     PRE bb : LIVRO &
          bb /: livro &
-         nn : NAT1 &
+         nn : NAT &
          bb /: dom(quantidadeExemplar)
     THEN adicionarLivro(bb,nn) 
     END;     
@@ -31,7 +31,8 @@ reservarLivro ( uu, bb ) =
         bb : LIVRO &
         uu : usuario &
         bb : livro &
-	    (bb : ran(reservado) or bb /: ran(reservado))
+    	(bb : ran(reservado) or bb /: ran(reservado)) &
+         quantidadeExemplar(bb) > card(ran(reservado))
     THEN 
         ANY nn
             WHERE nn : NAT & nn : quantidadeExemplar[{bb}]
@@ -47,6 +48,7 @@ cancelarReservar( uu, bb ) =
         uu : usuario &
         bb : livro &
         bb : ran(reservado)
+
     THEN 
         ANY nn
             WHERE nn : NAT & nn : quantidadeExemplar[{bb}]
