@@ -32,7 +32,9 @@ reservarLivro ( uu, bb ) =
         uu : usuario &
         bb : livro &
     	(bb : ran(reservado) or bb /: ran(reservado)) &
-         quantidadeExemplar(bb) > card(ran(reservado))
+         quantidadeExemplar(bb) > card(reservado[{uu}])  &
+         card(reservado[{uu}]) < 3
+         
     THEN 
         ANY nn
             WHERE nn : NAT & nn : quantidadeExemplar[{bb}]
