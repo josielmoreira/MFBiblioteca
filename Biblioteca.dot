@@ -1,4 +1,0 @@
-digraph module_hierarchy {
-  graph [page="8.5, 11",ratio=fill,size="7.5,10"];
-  1 [shape=record, color=steelblue, label="|{MACHINE Biblioteca\n|SETS\nUSUARIO\nLIVRO\n|VARIABLES\nusuario,livros,reservado,\nemprestado|OPERATIONS\ncadastrarLivro,reservarLivro,\nrealizarEmprestimo}|"];
-}
