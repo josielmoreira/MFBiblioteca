@@ -48,7 +48,6 @@ OPERATIONS
             reservado := reservado \/ {uu |-> bb} ||
             removeExemplar(bb,nn)
             
-            
         END
     END;
     
