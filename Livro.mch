@@ -15,7 +15,7 @@ OPERATIONS
     adicionarLivro(bb,nn) =
     PRE bb : LIVRO &
         bb /: livro &
-        nn : NAT1 &
+        nn : NAT &
         bb /: dom(quantidadeExemplar)
     THEN livro := livro \/ {bb} || 
         quantidadeExemplar := quantidadeExemplar \/ {bb |-> nn}
