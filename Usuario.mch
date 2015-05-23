@@ -6,7 +6,7 @@ MACHINE Usuario
     
 EXTENDS UsuarioC
 VARIABLES usuario, dia
-INVARIANT usuario <: USUARIO & dia : usuario <-> NAT
+INVARIANT usuario <: USUARIO & dia <: usuario * NAT
 INITIALISATION usuario := {} || dia := {}
 OPERATIONS
     
