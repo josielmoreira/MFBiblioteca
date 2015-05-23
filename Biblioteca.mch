@@ -1,11 +1,7 @@
-/* Biblioteca
-* Author: Josiel
-* Creation date: 11/05/2015
-*/
 MACHINE     Biblioteca
 INCLUDES     Usuario, Livro
 VARIABLES   reservado, emprestado
-INVARIANT   reservado <: usuario * livro & 
+INVARIANT   reservado <: usuario *livro & 
     	    emprestado <: usuario * livro
   
 INITIALISATION reservado := {} || 
@@ -23,8 +19,7 @@ OPERATIONS
     cadastrarLivro (bb,nn) =
     PRE bb : LIVRO &
         bb /: livro &
-        nn : NAT &
-        bb /: dom(quantidadeExemplar)
+        nn : NAT
     THEN  adicionarLivro(bb,nn)
     END;     
     
