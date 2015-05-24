@@ -6,7 +6,7 @@ MACHINE Usuario
     
 EXTENDS UsuarioC
 VARIABLES usuario, dia
-INVARIANT usuario <: USUARIO & dia <: usuario * NAT
+INVARIANT usuario <: USUARIO & dia <: usuario * INT
 INITIALISATION usuario := {} || dia := {}
 OPERATIONS
     
@@ -21,6 +21,11 @@ OPERATIONS
         uu : usuario
     THEN usuario := usuario - { uu }
     END;
+    
+    zerardia(uu) =
+    PRE uu : USUARIO & uu : usuario
+    THEN dia := dia <+ {uu |-> 0}
+        END;
     
     PassarDia(uu) =
     PRE uu : USUARIO &
@@ -37,7 +42,7 @@ OPERATIONS
         uu : dom(dia)
     THEN dia := dia <+ {uu |-> dd} 
     END;
-    
+
     
     atraso(uu,dd) =
     PRE uu : USUARIO &
