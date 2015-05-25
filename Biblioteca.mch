@@ -2,9 +2,9 @@ MACHINE Biblioteca
 INCLUDES Usuario, Livro
 VARIABLES reservado, emprestado, dia
 INVARIANT  dia <: (usuario * livro) * INT &
-           reservado <: usuario * livro &
-           emprestado <: usuario * livro
-           
+    reservado <: usuario * livro &
+    emprestado <: usuario * livro
+    
 INITIALISATION reservado := {} ||
     emprestado := {} ||
     dia := {}
@@ -29,7 +29,7 @@ OPERATIONS
         bb : livro &
         quantidadeExemplar(bb) > 0
     THEN
-        IF dia = {} or (dia(uu |-> bb) >= 0 & dia(uu|->bb) < 5)
+        IF dia = {}
         THEN
             ANY nn
             WHERE nn : NAT & nn : quantidadeExemplar[{bb}]
@@ -38,12 +38,23 @@ OPERATIONS
                 reservado := reservado \/ {uu |-> bb} ||
                 removeExemplar(bb,nn)
             END
-        ELSE
-            reservado := {uu} <<| reservado ||
-            dia := dia <+ {uu |-> bb |-> dia(uu|->bb) - 1}
+            
+        ELSE IF (dia(uu |-> bb) >= 0 & dia(uu|->bb) < 5)
+            THEN
+                ANY nn
+                WHERE nn : NAT & nn : quantidadeExemplar[{bb}]
+                THEN
+                    reservado := reservado \/ {uu |-> bb} ||
+                    removeExemplar(bb,nn)
+                END
+                
+            ELSE
+                reservado := {uu} <<| reservado ||
+                dia := dia <+ {uu |-> bb |-> dia(uu|->bb) - 1}
+            END
         END
     END;
-   
+    
     cancelarReservar( uu, bb ) =
     PRE uu : USUARIO &
         bb : LIVRO &
