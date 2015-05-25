@@ -29,16 +29,7 @@ OPERATIONS
         bb : livro &
         quantidadeExemplar(bb) > 0
     THEN
-        IF dia = {}
-        THEN
-            ANY nn
-            WHERE nn : NAT & nn : quantidadeExemplar[{bb}]
-            THEN
-                dia := dia <+ {uu |-> bb |-> 0} || 
-                reservado := reservado \/ {uu |-> bb} ||
-                removeExemplar(bb,nn)
-                END
-        ELSE IF dia /= {} & dia(uu |-> bb) >= 0 & dia(uu|->bb) < 5
+        IF dia = {} or (dia(uu |-> bb) >= 0 & dia(uu|->bb) < 5)
         THEN
             ANY nn
             WHERE nn : NAT & nn : quantidadeExemplar[{bb}]
@@ -50,7 +41,6 @@ OPERATIONS
         ELSE
             reservado := {uu} <<| reservado ||
             dia := dia <+ {uu |-> bb |-> dia(uu|->bb) - 1}
-        END
         END
     END;
    
