@@ -1,70 +1,66 @@
-MACHINE     Biblioteca
-INCLUDES     Usuario, Livro
-VARIABLES   reservado, emprestado
-INVARIANT   reservado <: usuario * livro & 
-            emprestado <: usuario * livro
-    
-INITIALISATION reservado := {} || 
-    emprestado := {} 
-    
-    
+MACHINE Biblioteca
+INCLUDES Usuario, Livro
+VARIABLES reservado, emprestado, dia
+INVARIANT  dia <: (usuario * livro) * INT &
+           reservado <: usuario * livro &
+           emprestado <: usuario * livro
+           
+INITIALISATION reservado := {} ||
+    emprestado := {} ||
+    dia := {}
 OPERATIONS
-    
     
     cadastrarUsuario ( uu ) =
     PRE uu : USUARIO & uu /: usuario
-    THEN adicionaUsuario(uu) 
+    THEN adicionaUsuario(uu)
     END;
     
     cadastrarLivro (bb,nn) =
     PRE bb : LIVRO &
         bb /: livro &
         nn : NAT
-    THEN  adicionarLivro(bb,nn)
-    END;     
-    
-    passarDia(uu) =
-    PRE uu : USUARIO &
-        uu : usuario &
-        dia(uu) > 4 &
-        uu /: dom(emprestado)
-    THEN PassarDia(uu)
+    THEN adicionarLivro(bb,nn)
     END;
     
-    reservarLivro ( uu, bb) = 
+    reservarLivro ( uu, bb) =
     PRE uu : USUARIO &
         bb : LIVRO &
         uu : usuario &
         bb : livro &
-        quantidadeExemplar(bb) > card(reservado[{uu}])  &
-        card(reservado[{uu}]) < 3
-        
+        quantidadeExemplar(bb) > 0
     THEN
-        IF dia(uu) >= 0 & dia(uu) < 5
+        IF dia = {}
         THEN
             ANY nn
             WHERE nn : NAT & nn : quantidadeExemplar[{bb}]
-            THEN               
+            THEN
+                dia := dia <+ {uu |-> bb |-> 0} || 
                 reservado := reservado \/ {uu |-> bb} ||
-                zerardia(uu) ||
+                removeExemplar(bb,nn)
+                END
+        ELSE IF dia /= {} & dia(uu |-> bb) >= 0 & dia(uu|->bb) < 5
+        THEN
+            ANY nn
+            WHERE nn : NAT & nn : quantidadeExemplar[{bb}]
+            THEN
+                dia := dia <+ {uu |-> bb |-> 0} || 
+                reservado := reservado \/ {uu |-> bb} ||
                 removeExemplar(bb,nn)
             END
-        ELSE 
+        ELSE
             reservado := {uu} <<| reservado ||
-            PassarDia(uu)
-            
+            dia := dia <+ {uu |-> bb |-> dia(uu|->bb) - 1}
+        END
         END
     END;
-    
-    cancelarReservar( uu, bb ) = 
+   
+    cancelarReservar( uu, bb ) =
     PRE uu : USUARIO &
         bb : LIVRO &
         uu : usuario &
         bb : livro &
         bb : ran(reservado)
-        
-    THEN 
-        
+    THEN
         ANY nn
         WHERE nn : NAT & nn : quantidadeExemplar[{bb}]
         THEN reservado := reservado - {uu |-> bb} ||
@@ -73,36 +69,35 @@ OPERATIONS
     END;
     
     realizarEmprestimo( uu, bb, dd) =
-    PRE  uu : USUARIO &
+    PRE uu : USUARIO &
         bb : LIVRO &
         uu : usuario &
         bb : livro &
-        dd : NAT &  dd /: ran(dia) & 
-        dd >  dia(uu) &
+        dd : NAT & dd /: ran(dia) &
+        dd > dia(uu|->bb) &
         uu : dom(reservado) & bb : ran(reservado)
-    THEN 
-            reservado := reservado - { uu|-> (bb)} ||
-            emprestado := emprestado \/ { uu|-> (bb)} ||
-            dias(uu,dd)
-        END;
-        
-        devolucao( uu, bb, dd) = 
-        PRE uu : USUARIO &
-            bb : LIVRO &
-            uu : usuario &
-            bb : livro &
-            dd : NAT &
-            dd >=  dia(uu) &
-            bb : ran(emprestado) & uu : dom(emprestado)
-        THEN 
-            ANY nn
-            WHERE nn : NAT & nn : quantidadeExemplar[{bb}]
-            THEN         
-                emprestado := emprestado - {uu |-> bb} ||
-                acrescentaExemplar(bb,nn) ||
-                atraso(uu,dd)
-                
-                
-            END
+    THEN
+        reservado := reservado - { uu|-> (bb)} ||
+        emprestado := emprestado \/ { uu|-> (bb)} ||
+        dia := dia <+ {uu |-> bb |-> dd}
+    END;
+    
+    
+    devolucao( uu, bb, dd) =
+    PRE uu : USUARIO &
+        bb : LIVRO &
+        uu : usuario &
+        bb : livro &
+        dd : NAT &
+        dd >= (dia(uu|->bb)) &
+        bb : ran(emprestado) & uu : dom(emprestado)
+    THEN
+        ANY nn
+        WHERE nn : NAT & nn : quantidadeExemplar[{bb}]
+        THEN
+            emprestado := emprestado - {uu |-> bb} ||
+            acrescentaExemplar(bb,nn) ||
+            dia := dia <+ {uu |-> bb |-> dd - dia(uu |-> bb)}
         END
     END
+END

@@ -1,55 +1,44 @@
 /* Livro
-* Author: 
+* Author:
 * Creation date: 12/05/15
 */
 MACHINE Livro
 EXTENDS LivroC
 VARIABLES livro, quantidadeExemplar
-INVARIANT   livro <: LIVRO  & 
-            quantidadeExemplar : livro --> NAT 
-           
-            
+INVARIANT livro <: LIVRO &
+    quantidadeExemplar : livro --> NAT
 INITIALISATION livro := {} || quantidadeExemplar := {}
 OPERATIONS
-    
     adicionarLivro(bb,nn) =
     PRE bb : LIVRO &
         bb /: livro &
         nn : NAT &
         bb /: dom(quantidadeExemplar)
-    THEN livro := livro \/ {bb} || 
+    THEN livro := livro \/ {bb} ||
         quantidadeExemplar := quantidadeExemplar \/ {bb |-> nn}
     END;
-    
-    
     removeLivro(bb) =
     PRE bb : LIVRO &
-        bb : LIVRO & 
+        bb : LIVRO &
         bb : livro &
         (bb : dom(quantidadeExemplar))
-    THEN  quantidadeExemplar := {bb} <<| quantidadeExemplar ||
+    THEN quantidadeExemplar := {bb} <<| quantidadeExemplar ||
         livro := livro - { bb }
     END;
-    
-    
     removeExemplar(bb,nn) =
-    PRE bb : LIVRO & 
-        bb : livro & 
+    PRE bb : LIVRO &
+        bb : livro &
         nn : NAT &
         nn : ran(quantidadeExemplar)
-    THEN quantidadeExemplar :=  quantidadeExemplar <+ {bb |-> nn - 1}
+    THEN quantidadeExemplar := quantidadeExemplar <+ {bb |-> nn - 1}
     END;
-    
-    
     acrescentaExemplar(bb,nn) =
-    PRE bb : LIVRO & 
-        bb : livro & 
+    PRE bb : LIVRO &
+        bb : livro &
         nn : NAT &
         nn + 1 < MAXINT &
         nn : ran(quantidadeExemplar)
-    THEN 
-        quantidadeExemplar :=  quantidadeExemplar <+ {bb |-> nn + 1}
+    THEN
+        quantidadeExemplar := quantidadeExemplar <+ {bb |-> nn + 1}
     END
-    
-    
 END
