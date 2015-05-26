@@ -10,18 +10,16 @@ INVARIANT      usuario <: USUARIO
 INITIALISATION usuario := {}
 OPERATIONS
     
-    rr <-- cadastrarUsuario ( uu ) =
+    cadastrarUsuario ( uu ) =
     PRE uu : USUARIO & 
         uu /: usuario
-    THEN rr := usuario_cadastrado || 
-         usuario := usuario \/ { uu }
+    THEN usuario := usuario \/ { uu }
     END;        
     
-    rr <-- removerUsuario ( uu ) = 
+    removerUsuario ( uu ) = 
     PRE uu : USUARIO &
         uu : usuario
-    THEN rr := usuario_removido || 
-         usuario := usuario - { uu }
+    THEN usuario := usuario - { uu }
     END
     
 END
