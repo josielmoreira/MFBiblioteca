@@ -3,17 +3,17 @@
  * Creation date: 23/05/2015
  */
 MACHINE            Exemplar
-EXTENDS            Titulo_ctx, Exemplar_ctx    
+USES               Titulo
 VARIABLES          exemplar 
-INVARIANT          exemplar : EXEMPLAR --> TITULO
-INITIALISATION     exemplar := {}
+INVARIANT          exemplar : ran(titulos) --> NAT
+INITIALISATION     exemplar := ran(titulos) * {0}
 OPERATIONS
     
-    cadastrarExemplar( ee, tt ) =
-    PRE ee : EXEMPLAR &
-        tt : TITULO
+    AdicionarExemplar( ee, nn ) =
+    PRE ee : ran(titulos) &
+        nn : NAT
     THEN
-        exemplar := exemplar \/ {ee |-> tt}
+        exemplar(ee):= nn
     END
     
 

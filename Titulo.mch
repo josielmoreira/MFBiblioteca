@@ -4,33 +4,34 @@
 */
 MACHINE Titulo
 INCLUDES Titulo_ctx
-VARIABLES titulo
-INVARIANT titulo : seq(TITULO)
-INITIALISATION titulo:= []
+VARIABLES titulos
+INVARIANT titulos : seq(TITULO)
+INITIALISATION titulos:= []
 OPERATIONS
     
     adicionarExemplar(bb) =
-    PRE bb : TITULO
-    THEN titulo := titulo <- bb
+    PRE bb : TITULO &
+        bb /: ran(titulos)
+    THEN titulos := titulos <- bb
     END;
     
     re <-- resposta(bb) =
     PRE bb : TITULO
-    THEN re := card(ran(titulo))
-        END;
+    THEN re := card(ran(titulos))
+    END;
     
-     re2 <-- resposta2(bb) =
+    re2 <-- resposta2(bb) =
     PRE bb : TITULO
-    THEN re2 := titulo~(bb)
-        END;
+    THEN re2 := titulos~(bb)
+    END;
     
     removerExemplar(bb) =
-    PRE bb : TITULO & bb : ran(titulo)
+    PRE bb : TITULO & bb : ran(titulos)
     THEN
-        ANY pp
-        WHERE pp = titulo~(bb)
-        THEN
-            titulo := (titulo/|\ pp-1) ^ (titulo \|/ pp)
+        LET pp
+        BE pp = titulos~(bb)
+        IN
+            titulos := (titulos/|\ pp-1) ^ (titulos \|/ pp)
         END
     END
 END
