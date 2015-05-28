@@ -1,0 +1,30 @@
+/* Titulo
+* Author:
+* Creation date: 12/05/15
+*/
+MACHINE Livros
+INCLUDES Exemplar
+PROMOTES adicionarExemplar
+VARIABLES livros
+INVARIANT livros : EXEMPLAR +-> NAT
+INITIALISATION livros := {}
+OPERATIONS
+    
+    AdicionarLivro(ll, nn) =
+    PRE ll : EXEMPLAR  & 
+        ll : ran(exemplar) &
+        ll /: dom(livros) &
+        nn : NAT1
+    THEN livros := livros \/ {ll |-> nn}
+    END;
+    
+    RemoverLivro(ll) =
+    PRE ll : EXEMPLAR  & 
+        ll : ran(exemplar) &
+        ll : dom(livros)
+    THEN livros := {ll} <<| livros ||
+         removerExemplar(ll)
+    END
+    
+    
+END

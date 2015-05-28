@@ -1,20 +1,30 @@
 /* Exemplar
- * Author: Josiel
- * Creation date: 23/05/2015
- */
+* Author: Josiel
+* Creation date: 23/05/2015
+*/
 MACHINE            Exemplar
-EXTENDS            Titulo_ctx, Exemplar_ctx    
-VARIABLES          exemplar 
-INVARIANT          exemplar : EXEMPLAR --> TITULO
+EXTENDS            Exemplar_ctx    
+VARIABLES          exemplar
+INVARIANT          exemplar : iseq(EXEMPLAR)
 INITIALISATION     exemplar := {}
 OPERATIONS
     
-    cadastrarExemplar( ee, tt ) =
-    PRE ee : EXEMPLAR &
-        tt : TITULO
+    adicionarExemplar(ll) =
+    PRE ll : EXEMPLAR &
+	    ll /: ran(exemplar)
+    THEN exemplar := exemplar <- ll
+    END;
+    
+    
+    removerExemplar(ll) =
+    PRE ll : EXEMPLAR & ll : ran(exemplar)
     THEN
-        exemplar := exemplar \/ {ee |-> tt}
+        ANY pp
+        WHERE pp = exemplar~(ll)
+        THEN
+            exemplar := (exemplar /|\ pp-1) ^ (exemplar \|/ pp)
+        END
     END
     
-
+    
 END
