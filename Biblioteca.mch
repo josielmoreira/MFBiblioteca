@@ -3,7 +3,7 @@ EXTENDS Livros
 INCLUDES Usuario
 VARIABLES reservado, emprestado
 INVARIANT reservado <: usuario * ran(exemplar) &
-    emprestado <: usuario * ran(exemplar)
+          emprestado <: usuario * ran(exemplar)
     
 INITIALISATION reservado := {} ||
     emprestado := {}
@@ -18,8 +18,8 @@ OPERATIONS
     reservarLivro(uu,ll) =
     PRE uu : USUARIO &
         uu : usuario &
-        ll : EXEMPLAR &
-        ll : dom(livros)
+        ll : dom(livros) &
+        card(reservado[{uu}]) < 3 
     THEN 
         reservado := reservado \/ {uu |-> ll} ||
         RemoverExemplar(ll)
