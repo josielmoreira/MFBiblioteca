@@ -16,7 +16,7 @@ OPERATIONS
     END;
     
     
-    removerExemplar(ll) =
+    removerExemplares(ll) =
     PRE ll : EXEMPLAR & ll : ran(exemplar)
     THEN
         ANY pp

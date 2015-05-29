@@ -23,13 +23,20 @@ OPERATIONS
         ll : ran(exemplar) &
         ll : dom(livros)
     THEN livros := {ll} <<| livros ||
-        removerExemplar(ll)
+        removerExemplares(ll)
     END;
     
     RemoverExemplar(ll) =
     PRE ll : EXEMPLAR &
         ll : dom(livros)
     THEN
-        livros := livros <+ {ll |-> livros(ll)-1}
+        livros := livros <+ {ll |-> livros(ll) -1}
+    END;
+    
+    AcrescentarExemplar(ll) =
+    PRE ll : EXEMPLAR &
+        ll : dom(livros)
+    THEN
+        livros := livros <+ {ll |-> livros(ll) + 1}
     END
 END
