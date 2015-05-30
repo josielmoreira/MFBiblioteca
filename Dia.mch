@@ -4,7 +4,7 @@
 */
 MACHINE Dia
 VARIABLES dia
-INVARIANT dia : NAT1
+INVARIANT dia : NAT
 INITIALISATION dia := 1
 OPERATIONS
     
@@ -17,11 +17,6 @@ OPERATIONS
     qq <-- diaAtual=
     PRE 1=1
     THEN qq := dia
-    END;
-    
-    qq <-- atraso(dd) =
-    PRE dd:NAT1
-    THEN
-        qq := dd-dia
     END
+    
 END

@@ -2,6 +2,6 @@
  * Author: Josiel
  * Creation date: 25/05/2015
  */
-MACHINE    Exemplar_ctx
-SETS EXEMPLAR
+MACHINE    Titulo_ctx
+SETS TITULO
 END
