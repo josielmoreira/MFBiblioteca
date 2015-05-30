@@ -6,7 +6,7 @@ MACHINE Livros
 INCLUDES Exemplar
 PROMOTES adicionarExemplar
 VARIABLES livros
-INVARIANT livros : EXEMPLAR +-> NAT
+INVARIANT livros : ran(exemplar) +-> NAT
 INITIALISATION livros := {}
 OPERATIONS
     
