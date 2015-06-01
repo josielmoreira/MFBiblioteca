@@ -3,8 +3,8 @@ INCLUDES Usuario,Exemplar
 PROMOTES adicionarTitulo,AdicionarExemplar
 EXTENDS Dia
 VARIABLES reservado, emprestado,saldo
-INVARIANT reservado : usuario +-> ran(titulo) &
-    emprestado : usuario +-> ran(titulo) &
+INVARIANT reservado <: usuario * dom(exemplar) &
+    emprestado <: usuario * dom(exemplar) &
     saldo <: usuario * NAT
     
 INITIALISATION reservado := {} ||
@@ -22,7 +22,10 @@ OPERATIONS
     reservarLivro(uu,ll) =
     PRE uu : USUARIO &
         uu : usuario &
+        ll : TITULO &
+        ll : dom(exemplar) &
         ll : ran(titulo) &
+        uu /: dom(emprestado) &
         card(reservado[{uu}]) < 2 &
         uu /: dom(reservado) &
         exemplar(ll) > 0
@@ -35,7 +38,7 @@ OPERATIONS
             ANY dd
             WHERE dd = saldo(uu)
             THEN
-                saldo := saldo <+ {uu |-> dd-1} ||
+                saldo := saldo <+ {uu |-> dd - 1} ||
                 passarDia
             END
         END
@@ -46,9 +49,11 @@ OPERATIONS
     emprestimoLivro(uu,ll,dd) =
     PRE uu : USUARIO &
         uu : usuario &
-        ll : ran(titulo) &
+        ll : TITULO &
+        ll : dom(exemplar) &
         ll : ran(reservado) &
         uu : dom(reservado) &
+        dd : NAT1 &
         dd = dia
     THEN 
         reservado := reservado - {uu |-> ll} ||
@@ -60,16 +65,19 @@ OPERATIONS
     DevolucaoLivro(uu,ll,dd) =
     PRE uu : USUARIO &
         uu : usuario &
-        ll : ran(titulo) &
+        ll : TITULO &
+        ll : dom(exemplar) &
         uu : dom(emprestado) &
         ll : ran(emprestado) &
-        dd = dia
+        dd : NAT1 &
+        dd = dia &
+        exemplar(ll) < MAXINT
     THEN 
         ANY tt
         WHERE tt = saldo(uu)
         THEN
             emprestado := emprestado- {uu |-> ll} ||
-            saldo := saldo <+ {uu |-> dd-tt} ||
+            saldo := saldo <+ {uu |-> dd - tt} ||
             AcrescentarExemplar(ll)
         END
     END

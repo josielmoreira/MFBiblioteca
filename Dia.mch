@@ -10,7 +10,7 @@ OPERATIONS
     
     
     passarDia=
-    PRE 1=1
+    PRE dia < MAXINT
     THEN dia := dia + 1
     END;
     

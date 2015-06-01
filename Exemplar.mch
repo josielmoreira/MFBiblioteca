@@ -18,24 +18,30 @@ OPERATIONS
     THEN exemplar := exemplar\/ {ll |-> nn}
     END;
     
+    
+    /*
     RemoverTitulos(ll) =
     PRE ll : TITULO & 
         ll : ran(titulo) &
         ll : dom(exemplar)
     THEN exemplar := {ll} <<| exemplar ||
-        removerTitulos(ll)
+        removerTitulo(ll)
     END;
+    */
     
     RemoverExemplar(ll) =
     PRE ll : TITULO &
-        ll : dom(exemplar)
+        ll : dom(exemplar) &
+        exemplar(ll) > 0
+        
     THEN
-        exemplar := exemplar <+ {ll |-> exemplar(ll) -1}
+        exemplar := exemplar <+ {ll |-> exemplar(ll) - 1}
     END;
     
     AcrescentarExemplar(ll) =
     PRE ll : TITULO &
-        ll : dom(exemplar)
+        ll : dom(exemplar) &
+         exemplar(ll) < MAXINT
     THEN
         exemplar := exemplar <+ {ll |-> exemplar(ll) + 1}
     END
