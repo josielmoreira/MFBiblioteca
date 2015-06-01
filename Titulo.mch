@@ -16,7 +16,7 @@ OPERATIONS
     END;
     
     
-    removerTitulos(ll) =
+    removerTitulo(ll) =
     PRE ll : TITULO & ll : ran(titulo)
     THEN
         ANY pp
