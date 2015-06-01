@@ -55,7 +55,6 @@ OPERATIONS
         saldo := saldo <+ {uu |-> dd} ||
         emprestado := emprestado \/ {uu |-> ll}
     END;
-    
     DevolucaoLivro(uu,ll,dd) =
     PRE uu : USUARIO &
         uu : usuario &
