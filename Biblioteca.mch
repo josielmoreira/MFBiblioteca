@@ -1,10 +1,8 @@
 MACHINE Biblioteca
-INCLUDES Usuario,Exemplar
-PROMOTES adicionarTitulo,AdicionarExemplar
-EXTENDS Dia
+EXTENDS Usuario,Exemplar, Dia
 VARIABLES reservado, emprestado,saldo
-INVARIANT reservado <: usuario * dom(exemplar) &
-    emprestado <: usuario * dom(exemplar) &
+INVARIANT reservado : usuario +-> dom(exemplar) &
+    emprestado : usuario +-> dom(exemplar) &
     saldo : usuario +-> NAT
 INITIALISATION reservado := {} ||
     emprestado := {} ||
@@ -16,6 +14,7 @@ OPERATIONS
     THEN cadastrarUsuario(uu) ||
         saldo := saldo \/ {uu |-> 0}
     END;
+    
     reservarLivro(uu,ll) =
     PRE uu : USUARIO &
         uu : usuario &
@@ -33,14 +32,11 @@ OPERATIONS
             saldo := saldo <+ {uu |-> 0} ||
             RemoverExemplar(ll)
         ELSE
-            ANY dd
-            WHERE dd = saldo(uu)
-            THEN
-                saldo := saldo <+ {uu |-> dd - 1} ||
+                saldo := saldo <+ {uu |-> saldo(uu) - 1} ||
                 passarDia
-            END
         END
     END;
+    
     emprestimoLivro(uu,ll,dd) =
     PRE uu : USUARIO &
         uu : usuario &
@@ -55,6 +51,7 @@ OPERATIONS
         saldo := saldo <+ {uu |-> dd} ||
         emprestado := emprestado \/ {uu |-> ll}
     END;
+    
     DevolucaoLivro(uu,ll,dd) =
     PRE uu : USUARIO &
         uu : usuario &
@@ -66,12 +63,8 @@ OPERATIONS
         dd = dia &
         exemplar(ll) < MAXINT
     THEN
-        ANY tt
-        WHERE tt = saldo(uu)
-        THEN
             emprestado := emprestado- {uu |-> ll} ||
-            saldo := saldo <+ {uu |-> dd - tt} ||
+            saldo := saldo <+ {uu |-> dd - saldo(uu)} ||
             AcrescentarExemplar(ll)
-        END
     END
 END

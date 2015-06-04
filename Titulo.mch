@@ -13,18 +13,14 @@ OPERATIONS
     PRE ll : TITULO &
 	    ll /: ran(titulo)
     THEN titulo := titulo <- ll
-    END;
+    END
     
-    
+    /*
     removerTitulo(ll) =
     PRE ll : TITULO & ll : ran(titulo)
     THEN
-        ANY pp
-        WHERE pp = titulo~(ll)
-        THEN
-            titulo := (titulo /|\ pp-1) ^ (titulo \|/ pp)
-        END
+            titulo := (titulo /|\ titulo~(ll)-1) ^ (titulo \|/ titulo~(ll))
     END
-    
+    */
     
 END
