@@ -1,0 +1,20 @@
+/* Usuario_i
+* Author: 
+* Creation date: 04/06/15
+*/
+
+IMPLEMENTATION Usuario_i
+REFINES Usuario
+VALUES USUARIO = 1..100
+IMPORTS Sets(USUARIO)
+INVARIANT set = usuario
+OPERATIONS
+    
+    
+    cadastrarUsuario ( uu ) =    
+    BEGIN
+    add(uu)
+    END
+    
+    
+END

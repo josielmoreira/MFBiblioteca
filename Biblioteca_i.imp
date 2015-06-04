@@ -1,20 +1,23 @@
-MACHINE Biblioteca
-EXTENDS Usuario,Exemplar, Dia
-VARIABLES reservado, emprestado,saldo
-INVARIANT reservado : usuario +-> dom(exemplar) &
-    emprestado : usuario +-> dom(exemplar) &
-    saldo : usuario +-> NAT
-INITIALISATION reservado := {} ||
-    emprestado := {} ||
+/* Biblioteca_i
+ * Author: 
+ * Creation date: 04/06/15
+ */
+
+IMPLEMENTATION Biblioteca_i
+REFINES Biblioteca
+
+
+INITIALISATION reservado := {};
+    emprestado := {};
     saldo := {}
+
 OPERATIONS
-    
+
     AdicionarUsuario ( uu ) =
-    PRE uu : USUARIO &
-        uu /: usuario
-    THEN cadastrarUsuario(uu) ||
-        saldo := saldo \/ {uu |-> 0}
-    END;
+    BEGIN
+        
+
+
     
     reservarLivro(uu,ll) =
     PRE uu : USUARIO &
@@ -37,6 +40,7 @@ OPERATIONS
                 passarDia
         END
     END;
+
     
     emprestimoLivro(uu,ll,dd) =
     PRE uu : USUARIO &
@@ -52,6 +56,7 @@ OPERATIONS
         saldo := saldo <+ {uu |-> dd} ||
         emprestado := emprestado \/ {uu |-> ll}
     END;
+
     
     DevolucaoLivro(uu,ll,dd) =
     PRE uu : USUARIO &
@@ -68,4 +73,5 @@ OPERATIONS
             saldo := saldo <+ {uu |-> dd - saldo(uu)} ||
             AcrescentarExemplar(ll)
     END
-END
+
+ END

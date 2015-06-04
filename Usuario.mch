@@ -14,12 +14,8 @@ OPERATIONS
     PRE uu : USUARIO & 
         uu /: usuario
     THEN usuario := usuario \/ { uu }
-    END;        
-    
-    removerUsuario ( uu ) = 
-    PRE uu : USUARIO &
-        uu : usuario
-    THEN usuario := usuario - { uu }
     END
+    
+   
     
 END
