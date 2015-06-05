@@ -6,5 +6,4 @@ MACHINE     Usuario_ctx
     
 SETS        USUARIO
             
-    
 END

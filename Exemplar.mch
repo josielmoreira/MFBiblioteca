@@ -1,6 +1,5 @@
 MACHINE Exemplar
-INCLUDES Titulo
-PROMOTES adicionarTitulo
+EXTENDS Titulo
 VARIABLES exemplar
 INVARIANT exemplar: ran(titulo) +-> NAT
 INITIALISATION exemplar := {}
@@ -10,17 +9,9 @@ OPERATIONS
         ll : ran(titulo) &
         ll /: dom(exemplar) &
         nn : NAT1
-    THEN exemplar := exemplar\/ {ll |-> nn}
+    THEN exemplar := exemplar \/ {ll |-> nn}
     END;
-    /*
-    RemoverTitulos(ll) =
-    PRE ll : TITULO &
-    ll : ran(titulo) &
-    ll : dom(exemplar)
-    THEN exemplar := {ll} <<| exemplar ||
-    removerTitulo(ll)
-    END;
-    */
+    
     RemoverExemplar(ll) =
     PRE ll : TITULO &
         ll : dom(exemplar) &

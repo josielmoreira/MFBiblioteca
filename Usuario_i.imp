@@ -9,9 +9,7 @@ VALUES USUARIO = 1..100
 IMPORTS Sets(USUARIO)
 INVARIANT set = usuario
 OPERATIONS
-    
-    
-    cadastrarUsuario ( uu ) =    
+cadastrarUsuario ( uu ) =    
     BEGIN
     add(uu)
     END
