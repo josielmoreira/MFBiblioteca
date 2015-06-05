@@ -5,102 +5,111 @@
 
 IMPLEMENTATION Biblioteca_i
 REFINES Biblioteca
-VALUES TITULO = 1..10;
-    USUARIO = 1..10
+VALUES USUARIO = 1..100;
+    TITULO = 1..10
+IMPORTS SetsUsuario(USUARIO), 
+    SetsExemplar(TITULO), 
+    SetsTitulo(TITULO), 
+    SetsDia,
+    SetsReserva(USUARIO, TITULO),
+    SetsEmprestimo(USUARIO, TITULO)
     
-CONCRETE_VARIABLES 
-    usuario_i, titulo_i, exemplar_i, reservado_i, emprestado_i, saldo_i, dia_i
-    
-INVARIANT usuario_i = usuario &
-    titulo_i = titulo &
-    exemplar_i = exemplar &
-    reservado_i = reservado &
-    emprestado_i = emprestado &
-    saldo_i = saldo
-    
-INITIALISATION
-    usuario_i := USUARIO;
-    titulo_i := TITULO * NAT;
-    exemplar_i := TITULO * NAT;
-    reservado_i := USUARIO * TITULO;
-    emprestado_i := USUARIO * TITULO;
-    saldo_i := USUARIO * NAT;
-    dia_i := NAT
-    
-    
+INVARIANT set = usuario & 
+    sete = exemplar & 
+    set2 = titulo &
+    tempo = dia &
+    reserva = reservado &
+    emprestimo = emprestado
 OPERATIONS
     
-    AdicionarUsuario ( uu ) =
+    
+    CadastrarUsuario ( uu ) =    
     BEGIN
-        usuario_i := {uu};
-        saldo_i(uu) := 0
+        addUser(uu)
     END;
     
-    cadastrarUsuario ( uu ) =
+    ZerarSaldo(uu) =
     BEGIN
-        usuario_i := {uu}
+        Zerar(uu)
+    END;
+    
+    DecrementarSaldoUsuario(uu) =
+    BEGIN
+        Decrementar(uu)
+    END;
+    
+    AtualizarSaldoUsuario(uu, dd) =
+    BEGIN
+        Atualizar(uu,dd)
+    END;    
+    
+    qq <-- verSaldo(uu) =
+    BEGIN
+        qq <-- verificarSaldo(uu)
+    END;
+    
+    atraso(uu, dd) =
+    BEGIN
+        diferenca(uu,dd)
     END;
     
     adicionarTitulo(ll) =
     BEGIN
-        titulo_i := ll
+        add2(ll) 
     END;
     
     AdicionarExemplar(ll, nn) =
     BEGIN
-        exemplar_i(ll) := nn
+        addSet(ll,nn) 
     END;
     
     RemoverExemplar(ll) =
     BEGIN
-        exemplar_i := ll
+        remove(ll)
     END;
     
     AcrescentarExemplar(ll) =
     BEGIN
-        exemplar_i := {ll}
+        add(ll)
     END;
     
     passarDia =
     BEGIN
-        VAR ii IN
-            ii := dia_i
-            END
+        avancar
     END;
     
     qq <-- diaAtual =
     BEGIN
-        VAR ii IN
-            ii := dia_i;
-            qq := ii
-        END
+        qq <-- tempoAtual
     END;
     
     reservarLivro(uu,ll) =
-    BEGIN
-        IF saldo_i(uu) < 5
+    VAR ss IN
+        ss <-- verificarSaldo(uu);
+        IF ss < 5 
         THEN
-            reservado_i(uu) := ll;
-            saldo_i(uu) := 0
+            addReserva(uu, ll);
+            Zerar(uu);
+            remove(ll)
         ELSE
-            saldo_i(uu) := saldo_i(uu) -1
+            Decrementar(uu);
+            avancar
         END
     END;
     
     emprestimoLivro(uu,ll,dd) =
     BEGIN
-        reservado_i(uu) := ll;
-        saldo_i(uu) := saldo_i(uu) + dd ;
-        emprestado_i(uu) := ll
+        removerReserva(uu, ll);
+        addEmprestimo(uu, ll);
+        Atualizar(uu,dd)
     END;
     
     DevolucaoLivro(uu,ll,dd) =
     BEGIN
-        emprestado_i(uu) := ll;
-        saldo_i(uu) := dd - saldo_i(uu)
-        
+        removerEmprestimo(uu, ll);
+        diferenca(uu,dd);
+        add(ll)
     END
-    
     
     
 END

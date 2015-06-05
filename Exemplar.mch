@@ -4,6 +4,7 @@ VARIABLES exemplar
 INVARIANT exemplar: ran(titulo) +-> NAT
 INITIALISATION exemplar := {}
 OPERATIONS
+    
     AdicionarExemplar(ll, nn) =
     PRE ll : TITULO &
         ll : ran(titulo) &
@@ -17,7 +18,7 @@ OPERATIONS
         ll : dom(exemplar) &
         exemplar(ll) > 0
     THEN
-        exemplar(ll) := exemplar(ll) - 1
+        exemplar(ll) := exemplar(ll) - 1 
     END;
     
     AcrescentarExemplar(ll) =
@@ -25,6 +26,6 @@ OPERATIONS
         ll : dom(exemplar) &
         exemplar(ll) < MAXINT
     THEN
-        exemplar(ll) := exemplar(ll) + 1
+        exemplar(ll) := exemplar(ll) + 1 
     END
 END
