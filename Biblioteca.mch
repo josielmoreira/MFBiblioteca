@@ -1,21 +1,14 @@
 MACHINE Biblioteca
 EXTENDS Usuario,Exemplar, Dia
-VARIABLES reservado, emprestado,saldo
+VARIABLES reservado, emprestado
 INVARIANT reservado : usuario +-> dom(exemplar) &
-          emprestado : usuario +-> dom(exemplar) &
-          saldo : usuario +-> NAT
+          emprestado : usuario +-> dom(exemplar)
+
 INITIALISATION reservado := {} ||
-    emprestado := {} ||
-    saldo := {}
+               emprestado := {} 
+
 OPERATIONS
-    
-    AdicionarUsuario ( uu ) =
-    PRE uu : USUARIO &
-        uu /: usuario
-    THEN cadastrarUsuario(uu) ||
-        saldo := saldo \/ {uu |-> 0}
-    END;
-    
+        
     reservarLivro(uu,ll) =
     PRE uu : USUARIO &
         uu : usuario &
@@ -30,10 +23,10 @@ OPERATIONS
     THEN IF saldo(uu) < 5
         THEN
             reservado := reservado \/ {uu |-> ll} ||
-            saldo(uu) :=  0 ||
+            ZerarSaldo(uu) ||
             RemoverExemplar(ll)
         ELSE
-                saldo(uu) := saldo(uu) - 1  ||
+                DecrementarSaldoUsuario(uu)  ||
                 passarDia
         END
     END;
@@ -49,7 +42,7 @@ OPERATIONS
         dd = dia
     THEN
         reservado := reservado - {uu |-> ll} ||
-        saldo(uu) := saldo(uu) + dd  ||
+        AtualizarSaldoUsuario(uu, dd)  ||
         emprestado := emprestado \/ {uu |-> ll}
     END;
     
@@ -65,7 +58,7 @@ OPERATIONS
         exemplar(ll) < MAXINT
     THEN
         emprestado := emprestado - {uu |-> ll} ||
-        saldo(uu) := dd - saldo(uu)  ||
+        DiasCorridos(uu, dd)  ||
         AcrescentarExemplar(ll)
     END
 END
