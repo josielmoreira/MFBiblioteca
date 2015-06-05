@@ -26,5 +26,12 @@ OPERATIONS
         exemplar(ll) < MAXINT
     THEN
         exemplar(ll) := exemplar(ll) + 1
-    END
+    END;
+    
+    ee <-- queryExemplar ( ll ) =
+        PRE ll : TITULO &
+            ll : dom(exemplar) 
+        THEN ee := exemplar(ll)
+        END
+            
 END

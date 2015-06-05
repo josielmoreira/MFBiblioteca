@@ -1,105 +1,46 @@
-/* Biblioteca_i
-* Author: 
-* Creation date: 04/06/15
-*/
-
 IMPLEMENTATION Biblioteca_i
 REFINES Biblioteca
-VALUES TITULO = 1..10;
-       USUARIO = 1..10
+VALUES USUARIO = 1..10
     
 CONCRETE_VARIABLES 
-    usuario_i, titulo_i, exemplar_i, reservado_i, emprestado_i, saldo_i, dia_i
+    usuario_i, saldo_i
     
-INVARIANT usuario_i = usuario &
-          titulo_i = titulo &
-          exemplar_i = exemplar &
-          reservado_i = reservado &
-          emprestado_i = emprestado
+INVARIANT usuario_i = usuario & saldo_i = saldo
     
 INITIALISATION
-    usuario_i := USUARIO;
-    titulo_i := TITULO * 0;
-    exemplar_i := TITULO * 0;
-    reservado_i := USUARIO * TITULO;
-    emprestado_i := USUARIO * TITULO;
-    saldo_i := USUARIO * 0;
-    dia_i := 1
+    usuario_i := {};
+    saldo_i := USUARIO * {0}
     
     
 OPERATIONS
+   
     
-    AdicionarUsuario ( uu ) =
+    CadastrarUsuario ( uu ) =
     BEGIN
-        usuario_i := uu;
+        usuario_i := {uu};
         saldo_i(uu) := 0
     END;
     
-    cadastrarUsuario ( uu ) =
+    ZerarSaldo(uu) =
     BEGIN
-        usuario_i := uu
+        saldo_i(uu) := 0
     END;
     
-    adicionarTitulo(ll) =
+    DecrementarSaldoUsuario(uu) =
     BEGIN
-        titulo_i := ll
+        saldo_i(uu) := saldo_i(uu) - 1
     END;
     
-    AdicionarExemplar(ll, nn) =
+    AtualizarSaldoUsuario(uu, dd) =
     BEGIN
-        exemplar_i(ll) := nn
+        saldo_i(uu) := saldo_i(uu) + dd
     END;
     
-    RemoverExemplar(ll) =
+    DiasCorridos(uu, dd) =
     BEGIN
-        exemplar_i := ll
-    END;
-    
-    AcrescentarExemplar(ll) =
-    BEGIN
-        exemplar_i := {ll}
-    END;
-    
-    
-    passarDia(nn) =
-    BEGIN
-        nn := dia_i
-    END;
-    
-    qq <-- diaAtual =
-    BEGIN
-        VAR ii IN
-            ii := dia_i;
-        qq := ii
+        saldo_i(uu) := dd - saldo_i(uu) 
         END
-    END;
     
-    reservarLivro(uu,ll) =
-    BEGIN
-        IF saldo_i(uu) < 5
-        THEN
-            reservado_i(uu) := ll;
-            saldo_i(uu) := 0;
-            RemoverExemplar(ll)
-        ELSE
-            saldo_i(uu) := saldo_i(uu) -1;
-            passarDia
-        END
-    END;
-    
-    emprestimoLivro(uu,ll,dd) =
-    BEGIN
-        reservado_i(uu) := ll;
-        saldo_i(uu) := saldo_i(uu) + dd ;
-        emprestado_i(uu) := ll
-    END;
-    
-    DevolucaoLivro(uu,ll,dd) =
-    BEGIN
-        emprestado_i(uu) := ll;
-        saldo_i(uu) := dd - saldo_i(uu);
-        AcrescentarExemplar(ll)
-        END
     
     
     
