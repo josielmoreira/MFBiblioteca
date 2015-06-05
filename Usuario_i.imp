@@ -6,9 +6,10 @@
 IMPLEMENTATION Usuario_i
 REFINES Usuario
 VALUES USUARIO = 1..100
-IMPORTS Sets(USUARIO)
+IMPORTS SetsUsuario(USUARIO)
 INVARIANT set = usuario
 OPERATIONS
+
 cadastrarUsuario ( uu ) =    
     BEGIN
     add(uu)

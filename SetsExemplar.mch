@@ -14,7 +14,13 @@ OPERATIONS
         sete\/{ee|->nn}: ITEM +-> NAT 
     THEN
         sete := sete \/ {ee |-> nn}
-    END
+    END;
     
+    removerItem(ee) =
+    PRE ee : ITEM &
+        ee : dom(sete)
+    THEN
+        sete(ee) := sete(ee) - 1
+        END
     
 END

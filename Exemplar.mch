@@ -17,13 +17,14 @@ OPERATIONS
         ll : dom(exemplar) &
         exemplar(ll) > 0
     THEN
-        exemplar := exemplar <+ {ll |-> exemplar(ll) - 1}
+        exemplar(ll) := exemplar(ll) - 1
     END;
+    
     AcrescentarExemplar(ll) =
     PRE ll : TITULO &
         ll : dom(exemplar) &
         exemplar(ll) < MAXINT
     THEN
-        exemplar := exemplar <+ {ll |-> exemplar(ll) + 1}
+        exemplar(ll) := exemplar(ll) + 1
     END
 END

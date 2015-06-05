@@ -4,7 +4,7 @@
  * Creation date: 23/05/2015
  */
 MACHINE        Usuario
-EXTENDS        Usuario_ctx
+SETS        USUARIO
 VARIABLES      usuario
 INVARIANT      usuario <: USUARIO
 INITIALISATION usuario := {}
