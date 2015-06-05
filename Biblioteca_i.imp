@@ -19,12 +19,12 @@ INVARIANT usuario_i = usuario &
     
 INITIALISATION
     usuario_i := USUARIO;
-    titulo_i := TITULO * NAT;
-    exemplar_i := TITULO * NAT;
+    titulo_i := TITULO * 0;
+    exemplar_i := TITULO * 0;
     reservado_i := USUARIO * TITULO;
     emprestado_i := USUARIO * TITULO;
-    saldo_i := USUARIO * NAT;
-    dia_i := NAT
+    saldo_i := USUARIO * 0;
+    dia_i := 1
     
     
 OPERATIONS
