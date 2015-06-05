@@ -10,7 +10,7 @@ OPERATIONS
     END;
     
     qq <-- diaAtual=
-    PRE 1=1
-    THEN qq := dia
+    BEGIN
+        qq := dia
     END
 END
