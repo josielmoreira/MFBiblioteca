@@ -6,16 +6,17 @@
 IMPLEMENTATION Biblioteca_i
 REFINES Biblioteca
 VALUES TITULO = 1..10;
-       USUARIO = 1..10
+    USUARIO = 1..10
     
 CONCRETE_VARIABLES 
     usuario_i, titulo_i, exemplar_i, reservado_i, emprestado_i, saldo_i, dia_i
     
 INVARIANT usuario_i = usuario &
-          titulo_i = titulo &
-          exemplar_i = exemplar &
-          reservado_i = reservado &
-          emprestado_i = emprestado
+    titulo_i = titulo &
+    exemplar_i = exemplar &
+    reservado_i = reservado &
+    emprestado_i = emprestado &
+    saldo_i = saldo
     
 INITIALISATION
     usuario_i := USUARIO;
@@ -31,13 +32,13 @@ OPERATIONS
     
     AdicionarUsuario ( uu ) =
     BEGIN
-        usuario_i := uu;
+        usuario_i := {uu};
         saldo_i(uu) := 0
     END;
     
     cadastrarUsuario ( uu ) =
     BEGIN
-        usuario_i := uu
+        usuario_i := {uu}
     END;
     
     adicionarTitulo(ll) =
@@ -60,17 +61,18 @@ OPERATIONS
         exemplar_i := {ll}
     END;
     
-    
-    passarDia(nn) =
+    passarDia =
     BEGIN
-        nn := dia_i
+        VAR ii IN
+            ii := dia_i
+            END
     END;
     
     qq <-- diaAtual =
     BEGIN
         VAR ii IN
             ii := dia_i;
-        qq := ii
+            qq := ii
         END
     END;
     
@@ -79,11 +81,9 @@ OPERATIONS
         IF saldo_i(uu) < 5
         THEN
             reservado_i(uu) := ll;
-            saldo_i(uu) := 0;
-            RemoverExemplar(ll)
+            saldo_i(uu) := 0
         ELSE
-            saldo_i(uu) := saldo_i(uu) -1;
-            passarDia
+            saldo_i(uu) := saldo_i(uu) -1
         END
     END;
     
@@ -97,9 +97,9 @@ OPERATIONS
     DevolucaoLivro(uu,ll,dd) =
     BEGIN
         emprestado_i(uu) := ll;
-        saldo_i(uu) := dd - saldo_i(uu);
-        AcrescentarExemplar(ll)
-        END
+        saldo_i(uu) := dd - saldo_i(uu)
+        
+    END
     
     
     
