@@ -30,10 +30,10 @@ OPERATIONS
     THEN IF saldo(uu) < 5
         THEN
             reservado := reservado \/ {uu |-> ll} ||
-            saldo := saldo <+ {uu |-> 0} ||
+            saldo(uu) :=  0 ||
             RemoverExemplar(ll)
         ELSE
-                saldo := saldo <+ {uu |-> saldo(uu) - 1} ||
+                saldo(uu) := saldo(uu) -1  ||
                 passarDia
         END
     END;
@@ -49,7 +49,7 @@ OPERATIONS
         dd = dia
     THEN
         reservado := reservado - {uu |-> ll} ||
-        saldo := saldo <+ {uu |-> dd} ||
+        saldo(uu) := saldo(uu) + dd  ||
         emprestado := emprestado \/ {uu |-> ll}
     END;
     
@@ -65,7 +65,7 @@ OPERATIONS
         exemplar(ll) < MAXINT
     THEN
             emprestado := emprestado- {uu |-> ll} ||
-            saldo := saldo <+ {uu |-> dd - saldo(uu)} ||
+            saldo(uu) := dd - saldo(uu)  ||
             AcrescentarExemplar(ll)
     END
 END
