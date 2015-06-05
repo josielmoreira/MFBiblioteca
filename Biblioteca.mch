@@ -1,9 +1,9 @@
 MACHINE Biblioteca
 EXTENDS Usuario,Exemplar, Dia
-VARIABLES reservado, emprestado,saldo
+VARIABLES reservado, emprestado, saldo
 INVARIANT reservado : usuario +-> dom(exemplar) &
-    emprestado : usuario +-> dom(exemplar) &
-    saldo : usuario +-> NAT
+          emprestado : usuario +-> dom(exemplar) &
+          saldo : usuario +-> NAT
 INITIALISATION reservado := {} ||
     emprestado := {} ||
     saldo := {}

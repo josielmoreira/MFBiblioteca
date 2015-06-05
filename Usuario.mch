@@ -4,7 +4,7 @@
  * Creation date: 23/05/2015
  */
 MACHINE        Usuario
-SETS        USUARIO
+SETS           USUARIO
 VARIABLES      usuario
 INVARIANT      usuario <: USUARIO
 INITIALISATION usuario := {}

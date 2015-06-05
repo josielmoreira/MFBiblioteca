@@ -1,75 +1,106 @@
 /* Biblioteca_i
- * Author: 
- * Creation date: 04/06/15
- */
+* Author: 
+* Creation date: 04/06/15
+*/
 
 IMPLEMENTATION Biblioteca_i
 REFINES Biblioteca
 VALUES TITULO = 1..10;
-       USUARIO = 1..1
-
-
+       USUARIO = 1..10
+    
+CONCRETE_VARIABLES 
+    usuario_i, titulo_i, exemplar_i, reservado_i, emprestado_i, saldo_i, dia_i
+    
+INVARIANT usuario_i = usuario &
+          titulo_i = titulo &
+          exemplar_i = exemplar &
+          reservado_i = reservado &
+          emprestado_i = emprestado
+    
+INITIALISATION
+    usuario_i := USUARIO;
+    titulo_i := TITULO * NAT;
+    exemplar_i := TITULO * NAT;
+    reservado_i := USUARIO * TITULO;
+    emprestado_i := USUARIO * TITULO;
+    saldo_i := USUARIO * NAT;
+    dia_i := NAT
+    
+    
 OPERATIONS
-
+    
     AdicionarUsuario ( uu ) =
     BEGIN
-        
-
-
+        usuario_i := uu;
+        saldo_i(uu) := 0
+    END;
     
-    reservarLivro(uu,ll) =
-    PRE uu : USUARIO &
-        uu : usuario &
-        ll : TITULO &
-        ll : dom(exemplar) &
-        ll : ran(titulo) &
-        uu /: dom(emprestado) &
-        card(reservado[{uu}]) < 2 &
-        uu /: dom(reservado) &
-        exemplar(ll) > 0 &
-        dia < MAXINT
-    THEN IF saldo(uu) < 5
-        THEN
-            reservado := reservado \/ {uu |-> ll} ||
-            saldo := saldo <+ {uu |-> 0} ||
-            RemoverExemplar(ll)
-        ELSE
-                saldo := saldo <+ {uu |-> saldo(uu) - 1} ||
-                passarDia
+    cadastrarUsuario ( uu ) =
+    BEGIN
+        usuario_i := uu
+    END;
+    
+    adicionarTitulo(ll) =
+    BEGIN
+        titulo_i := ll
+    END;
+    
+    AdicionarExemplar(ll, nn) =
+    BEGIN
+        exemplar_i(ll) := nn
+    END;
+    
+    RemoverExemplar(ll) =
+    BEGIN
+        exemplar_i := ll
+    END;
+    
+    AcrescentarExemplar(ll) =
+    BEGIN
+        exemplar_i := {ll}
+    END;
+    
+    
+    passarDia(nn) =
+    BEGIN
+        nn := dia_i
+    END;
+    
+    qq <-- diaAtual =
+    BEGIN
+        VAR ii IN
+            ii := dia_i;
+        qq := ii
         END
     END;
-
+    
+    reservarLivro(uu,ll) =
+    BEGIN
+        IF saldo_i(uu) < 5
+        THEN
+            reservado_i(uu) := ll;
+            saldo_i(uu) := 0;
+            RemoverExemplar(ll)
+        ELSE
+            saldo_i(uu) := saldo_i(uu) -1;
+            passarDia
+        END
+    END;
     
     emprestimoLivro(uu,ll,dd) =
-    PRE uu : USUARIO &
-        uu : usuario &
-        ll : TITULO &
-        ll : dom(exemplar) &
-        ll : ran(reservado) &
-        uu : dom(reservado) &
-        dd : NAT1 &
-        dd = dia
-    THEN
-        reservado := reservado - {uu |-> ll} ||
-        saldo := saldo <+ {uu |-> dd} ||
-        emprestado := emprestado \/ {uu |-> ll}
+    BEGIN
+        reservado_i(uu) := ll;
+        saldo_i(uu) := saldo_i(uu) + dd ;
+        emprestado_i(uu) := ll
     END;
-
     
     DevolucaoLivro(uu,ll,dd) =
-    PRE uu : USUARIO &
-        uu : usuario &
-        ll : TITULO &
-        ll : dom(exemplar) &
-        uu : dom(emprestado) &
-        ll : ran(emprestado) &
-        dd : NAT1 &
-        dd = dia &
-        exemplar(ll) < MAXINT
-    THEN
-            emprestado := emprestado- {uu |-> ll} ||
-            saldo := saldo <+ {uu |-> dd - saldo(uu)} ||
-            AcrescentarExemplar(ll)
-    END
-
- END
+    BEGIN
+        emprestado_i(uu) := ll;
+        saldo_i(uu) := dd - saldo_i(uu);
+        AcrescentarExemplar(ll)
+        END
+    
+    
+    
+END
