@@ -5,11 +5,9 @@
 
 IMPLEMENTATION Biblioteca_i
 REFINES Biblioteca
+VALUES TITULO = 1..10;
+       USUARIO = 1..1
 
-
-INITIALISATION reservado := {};
-    emprestado := {};
-    saldo := {}
 
 OPERATIONS
 
