@@ -2,8 +2,8 @@ MACHINE Biblioteca
 EXTENDS Usuario,Exemplar, Dia
 VARIABLES reservado, emprestado,saldo
 INVARIANT reservado : usuario +-> dom(exemplar) &
-    emprestado : usuario +-> dom(exemplar) &
-    saldo : usuario +-> NAT
+          emprestado : usuario +-> dom(exemplar) &
+          saldo : usuario +-> NAT
 INITIALISATION reservado := {} ||
     emprestado := {} ||
     saldo := {}
@@ -33,7 +33,7 @@ OPERATIONS
             saldo(uu) :=  0 ||
             RemoverExemplar(ll)
         ELSE
-                saldo(uu) := saldo(uu) -1  ||
+                saldo(uu) := saldo(uu) - 1  ||
                 passarDia
         END
     END;
@@ -64,8 +64,8 @@ OPERATIONS
         dd = dia &
         exemplar(ll) < MAXINT
     THEN
-            emprestado := emprestado- {uu |-> ll} ||
-            saldo(uu) := dd - saldo(uu)  ||
-            AcrescentarExemplar(ll)
+        emprestado := emprestado - {uu |-> ll} ||
+        saldo(uu) := dd - saldo(uu)  ||
+        AcrescentarExemplar(ll)
     END
 END

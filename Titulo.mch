@@ -11,7 +11,7 @@ OPERATIONS
     
     adicionarTitulo(ll) =
     PRE ll : TITULO &
-	    ll /: ran(titulo)
+        ll /: ran(titulo)
     THEN titulo := titulo <- ll
     END
     
