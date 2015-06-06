@@ -4,27 +4,24 @@
  */
 MACHINE SetsUsuario(ITEM)
 VARIABLES set, qtd
-INVARIANT set <: ITEM & qtd : set +-> NAT
+INVARIANT set <: ITEM & qtd <: set * NAT
 INITIALISATION set := {} || qtd := {}
 OPERATIONS
     
     addUser(ee) =
-        PRE ee : ITEM &
-            ee /: set 
+        PRE ee : ITEM
         THEN
             set := {ee} ||
             qtd(ee) := 0
         END;
     
     Zerar(ee) =
-        PRE ee : ITEM &
-            ee : dom(qtd)
+        PRE ee : ITEM
         THEN qtd(ee) := 0
         END;
     
     Decrementar(ee) =
-        PRE ee : ITEM &
-            ee : dom(qtd)
+        PRE ee : ITEM
         THEN IF qtd(ee) > 0 
             THEN
                 qtd(ee) := qtd(ee) - 1 
@@ -35,22 +32,19 @@ OPERATIONS
     
     Atualizar(ee,nn) =
         PRE ee : ITEM &
-            ee : dom(qtd) &
             nn : NAT &
             nn + qtd(ee) < 100
         THEN qtd(ee) := qtd(ee) + nn
         END;
     
-    qq <-- verificarSaldo(ee) =
+    ss <-- verificarSaldo(ee) =
         PRE ee : ITEM
-        THEN qq := qtd(ee)
+        THEN ss := qtd(ee)
         END;
     
     diferenca(ee,nn) =
         PRE ee : ITEM &
-            ee : dom(qtd) &
-            nn : NAT &
-            nn > qtd(ee)
+            nn : NAT
         THEN qtd(ee) := nn - qtd(ee)
         END
 END

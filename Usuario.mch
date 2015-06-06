@@ -2,7 +2,7 @@ MACHINE Usuario
 SETS USUARIO
 VARIABLES usuario, saldo
 INVARIANT usuario <: USUARIO &
-    saldo : usuario +-> NAT
+          saldo : usuario +-> NAT
 INITIALISATION usuario := {} ||
     saldo := {}
 OPERATIONS
@@ -41,11 +41,11 @@ OPERATIONS
         END
     END;
     
-    qq <-- verSaldo(uu) =
+    ss <-- verSaldo(uu) =
     PRE uu : USUARIO &
         uu : usuario
         THEN
-        qq := saldo(uu)
+        ss := saldo(uu)
     END;
     
     

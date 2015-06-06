@@ -5,8 +5,8 @@
 
 IMPLEMENTATION Biblioteca_i
 REFINES Biblioteca
-VALUES USUARIO = 1..100;
-    TITULO = 1..10
+VALUES USUARIO = 1..2;
+       TITULO = 1..10
 IMPORTS SetsUsuario(USUARIO), 
     SetsExemplar(TITULO), 
     SetsTitulo(TITULO), 
@@ -20,6 +20,8 @@ INVARIANT set = usuario &
     tempo = dia &
     reserva = reservado &
     emprestimo = emprestado
+
+    
 OPERATIONS
     
     
@@ -43,9 +45,9 @@ OPERATIONS
         Atualizar(uu,dd)
     END;    
     
-    qq <-- verSaldo(uu) =
+    ss <-- verSaldo(uu) =
     BEGIN
-        qq <-- verificarSaldo(uu)
+        ss <-- verificarSaldo(uu)
     END;
     
     atraso(uu, dd) =
