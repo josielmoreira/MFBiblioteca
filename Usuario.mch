@@ -30,7 +30,8 @@ OPERATIONS
     AtualizarSaldoUsuario(uu, dd) =
     PRE uu : USUARIO &
         uu : usuario &
-        dd : NAT
+        dd : NAT &
+        dd + saldo(uu) < 100
     THEN 
         IF saldo(uu) > 0
         THEN
@@ -51,7 +52,8 @@ OPERATIONS
     atraso(uu, dd) =
     PRE uu : USUARIO &
         uu : usuario &
-        dd : NAT
+        dd : NAT &
+        dd > saldo(uu)
     THEN 
         IF saldo(uu) > 0
         THEN

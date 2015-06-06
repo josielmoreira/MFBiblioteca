@@ -4,12 +4,12 @@ INVARIANT dia : NAT
 INITIALISATION dia := 1
 OPERATIONS
     
-    passarDia=
-    PRE dia < MAXINT
+    passarDia =
+    PRE dia < 366
     THEN dia := dia + 1
     END;
     
-    qq <-- diaAtual=
+    qq <-- diaAtual =
     BEGIN
         qq := dia
     END

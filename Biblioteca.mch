@@ -19,7 +19,7 @@ OPERATIONS
         card(reservado[{uu}]) < 2 &
         uu /: dom(reservado) &
         exemplar(ll) > 0 &
-        dia < MAXINT
+        dia < 366
     THEN IF saldo(uu) < 5
         THEN
             reservado := reservado \/ {uu |-> ll} ||
@@ -39,7 +39,8 @@ OPERATIONS
         ll : ran(reservado) &
         uu : dom(reservado) &
         dd : NAT1 &
-        dd = dia
+        dd = dia &
+        dd + saldo(uu) < 100
     THEN
         reservado := reservado - {uu |-> ll} ||
         AtualizarSaldoUsuario(uu, dd)  ||
@@ -55,7 +56,8 @@ OPERATIONS
         ll : ran(emprestado) &
         dd : NAT1 &
         dd = dia &
-        exemplar(ll) < MAXINT
+        exemplar(ll) < MAXINT &
+        dd > saldo(uu)
     THEN
             emprestado := emprestado - {uu |-> ll} ||
             atraso(uu, dd)  ||
