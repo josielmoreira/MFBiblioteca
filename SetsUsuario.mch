@@ -42,6 +42,7 @@ OPERATIONS
         THEN ss := qtd(ee)
         END;
     
+    
     diferenca(ee,nn) =
         PRE ee : ITEM &
             nn : NAT

@@ -56,8 +56,7 @@ OPERATIONS
         ll : ran(emprestado) &
         dd : NAT1 &
         dd = dia &
-        exemplar(ll) < MAXINT &
-        dd > saldo(uu)
+        exemplar(ll) < MAXINT
     THEN
             emprestado := emprestado - {uu |-> ll} ||
             atraso(uu, dd)  ||

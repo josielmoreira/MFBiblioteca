@@ -10,8 +10,9 @@ OPERATIONS
         ll : ran(titulo) &
         ll /: dom(exemplar) &
         nn : NAT1
-    THEN exemplar := exemplar \/ {ll |-> nn}
+    THEN exemplar(ll) := nn
     END;
+    
     
     RemoverExemplar(ll) =
     PRE ll : TITULO &
@@ -21,6 +22,9 @@ OPERATIONS
         exemplar(ll) := exemplar(ll) - 1 
     END;
     
+    
+
+    
     AcrescentarExemplar(ll) =
     PRE ll : TITULO &
         ll : dom(exemplar) &
@@ -28,4 +32,6 @@ OPERATIONS
     THEN
         exemplar(ll) := exemplar(ll) + 1 
     END
+    
+    
 END

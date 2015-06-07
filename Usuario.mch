@@ -35,11 +35,12 @@ OPERATIONS
     THEN 
         IF saldo(uu) > 0
         THEN
-            saldo(uu) := saldo(uu) + dd
+            saldo(uu) := 0
         ELSE
-            skip
+            saldo(uu) := saldo(uu) + dd
         END
     END;
+    
     
     ss <-- verSaldo(uu) =
     PRE uu : USUARIO &
@@ -53,7 +54,7 @@ OPERATIONS
     PRE uu : USUARIO &
         uu : usuario &
         dd : NAT &
-        dd > saldo(uu)
+        dd >= saldo(uu)
     THEN 
         IF saldo(uu) > 0
         THEN

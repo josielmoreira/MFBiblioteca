@@ -4,114 +4,171 @@
 */
 
 IMPLEMENTATION Biblioteca_i
-REFINES Biblioteca
-VALUES USUARIO = 1..2;
-       TITULO = 1..10
-IMPORTS SetsUsuario(USUARIO), 
+    /* REFINES Biblioteca */
+REFINES Exemplar
+    
+    /*VALUES USUARIO = 1..10;
+    TITULO = 1..10
+    */
+VALUES TITULO = 1..10
+    
+    /*       
+    IMPORTS SetsUsuario(USUARIO), 
     SetsExemplar(TITULO), 
     SetsTitulo(TITULO), 
-    SetsDia,
+    SetsDia, 
     SetsReserva(USUARIO, TITULO),
     SetsEmprestimo(USUARIO, TITULO)
+    */
+CONCRETE_VARIABLES 
+    /* usuario_i, titulo_i, exemplar_i,saldo_i, dia_i, emprestado_i, reservado_i */
+    titulo_i,exemplar_i
     
-INVARIANT set = usuario & 
+    /*
+    INVARIANT set = usuario & 
     sete = exemplar & 
     set2 = titulo &
     tempo = dia &
     reserva = reservado &
     emprestimo = emprestado
-
+    */
+    
+INVARIANT
+    titulo_i : TITULO --> BOOL &
+    exemplar_i : dom(titulo_i) --> NAT
+    /*
+    usuario_i = USUARIO +-> BOOL &
+    titulo_i = titulo &
+    exemplar_i = exemplar &
+    saldo_i = saldo &
+    dia_i = dia &
+    emprestado_i = emprestado &
+    reservado_i = reservado
+    */
+    
+    
+INITIALISATION
+    
+    titulo_i := TITULO * {FALSE};
+    exemplar_i := TITULO * {0}
+    
+    /*
+    usuario_i := USUARIO;
+    titulo_i := TITULO;
+    exemplar_i := TITULO * 1..10;
+    saldo_i := USUARIO * 1..366;
+    dia_i := 1;
+    emprestado_i := USUARIO * TITULO;
+    reservado_i := USUARIO * TITULO
+    */
+    
     
 OPERATIONS
     
-    
-    CadastrarUsuario ( uu ) =    
-    BEGIN
-        addUser(uu)
-    END;
-    
-    ZerarSaldo(uu) =
-    BEGIN
-        Zerar(uu)
-    END;
-    
-    DecrementarSaldoUsuario(uu) =
-    BEGIN
-        Decrementar(uu)
-    END;
-    
-    AtualizarSaldoUsuario(uu, dd) =
-    BEGIN
-        Atualizar(uu,dd)
-    END;    
-    
-    ss <-- verSaldo(uu) =
-    BEGIN
-        ss <-- verificarSaldo(uu)
-    END;
-    
-    atraso(uu, dd) =
-    BEGIN
-        diferenca(uu,dd)
-    END;
-    
     adicionarTitulo(ll) =
     BEGIN
-        add2(ll) 
+        titulo_i(ll) := TRUE
     END;
     
     AdicionarExemplar(ll, nn) =
     BEGIN
-        addSet(ll,nn) 
+        IF titulo_i(ll) = TRUE
+        THEN
+            exemplar_i(ll) := nn
+        END
     END;
     
     RemoverExemplar(ll) =
     BEGIN
-        remove(ll)
+        IF exemplar_i(ll) > 0
+            THEN
+        exemplar_i(ll) :=  exemplar_i(ll) - 1
+        END
     END;
     
     AcrescentarExemplar(ll) =
     BEGIN
-        add(ll)
+         exemplar_i(ll) :=  exemplar_i(ll) + 1
+         END
+    
+    
+    /*
+    CadastrarUsuario ( uu ) =    
+    BEGIN
+    
+    END;
+    
+    ZerarSaldo(uu) =
+    BEGIN
+    
+    END;
+    
+    DecrementarSaldoUsuario(uu) =
+    BEGIN
+    
+    END;
+    
+    AtualizarSaldoUsuario(uu, dd) =
+    BEGIN
+    
+    END;    
+    
+    
+    ss <-- verSaldo(uu) =
+    BEGIN
+    
+    END;
+    
+    
+    atraso(uu, dd) =
+    BEGIN
+    
+    END;
+    
+    adicionarTitulo(ll) =
+    BEGIN
+    
+    END;
+    
+    AdicionarExemplar(ll, nn) =
+    BEGIN
+    
+    END;
+    
+    RemoverExemplar(ll) =
+    BEGIN
+    
+    END;
+    
+    AcrescentarExemplar(ll) =
+    BEGIN
+    
     END;
     
     passarDia =
     BEGIN
-        avancar
+    
     END;
     
     qq <-- diaAtual =
     BEGIN
-        qq <-- tempoAtual
+    
     END;
     
     reservarLivro(uu,ll) =
-    VAR ss IN
-        ss <-- verificarSaldo(uu);
-        IF ss < 5 
-        THEN
-            addReserva(uu, ll);
-            Zerar(uu);
-            remove(ll)
-        ELSE
-            Decrementar(uu);
-            avancar
-        END
+    BEGIN
+    
     END;
     
     emprestimoLivro(uu,ll,dd) =
     BEGIN
-        removerReserva(uu, ll);
-        addEmprestimo(uu, ll);
-        Atualizar(uu,dd)
+    
     END;
     
     DevolucaoLivro(uu,ll,dd) =
     BEGIN
-        removerEmprestimo(uu, ll);
-        diferenca(uu,dd);
-        add(ll)
-    END
     
+    END
+    */
     
 END
